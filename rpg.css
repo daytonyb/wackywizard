@@ -1,0 +1,1212 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Press+Start+2P&display=swap');
+
+:root {
+    --primary-gold: #fbbf24;
+    --bg-dark: #1a1a1a;
+    --panel-bg: #2d2d2d;
+    --border-color: #444;
+}
+
+h1, h2, h3 {
+    font-family: 'Press Start 2P', cursive;
+    color: var(--primary-gold);
+    text-shadow: 2px 2px #000;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+}
+
+body {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #222;
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+#game-container { display: flex; gap: 20px; }
+
+/* 9x9 Grid */
+#grid {
+    display: grid;
+    grid-template-columns: repeat(9, 60px);
+    grid-template-rows: repeat(9, 60px);
+    gap: 4px;
+    background-color: #444;
+    border: 4px solid #666;
+    /* CRITICAL FOR ANIMATIONS TO ALIGN: */
+    position: relative; 
+}
+
+.cell {
+    width: 58px;
+    height: 58px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 24px;
+    position: relative;
+    border: 1px solid transparent; 
+}
+
+.coord-label {
+    position: absolute;
+    top: 2px; left: 2px;
+    font-size: 8px;
+    color: #555;
+    font-family: sans-serif;
+}
+
+/* --- BIOME THEMES --- */
+.biome-sewer .cell { background-color: #2e2a18; border-color: #4a452a; }
+.biome-forest .cell { background-color: #1a2f1a; border-color: #2d4a2d; }
+.biome-mine .cell { background-color: #2c241b; border-color: #3e3226; }
+
+/* LEVEL 4: CASTLE THEME */
+.biome-castle .cell {
+    background-color: #374151; /* Dark Slate */
+    border-color: #4b5563;
+}
+
+/* --- ENTITIES & OVERRIDES --- */
+.wall {
+    background-image: url('images/wall.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated; 
+}
+
+.door {
+    background-image: url('images/door.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated; 
+}
+
+.portal { 
+    background-image: url('images/portal.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 1;
+}
+
+/* Hazards */
+.hazard {
+    background-image: url('images/hazard.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hazard::after { content: ""; color: #14532d; font-weight: bold; font-size: 20px; opacity: 1; z-index: 1; }
+
+.thicket { background-color: #14532d !important; color: #4ade80; z-index: 1; }
+.thicket::after { content: "♣"; opacity: 0.5; font-size: 20px; }
+
+.river {
+    background-color: #3b82f6 !important; 
+    color: #bfdbfe; 
+    z-index: 1;
+    animation: flow 1s infinite linear;
+}
+.river::after { content: "≈"; font-weight: bold; font-size: 24px; }
+
+/* --- PHASE SPIKES (LEVEL 4) --- */
+.spike-safe {
+    background-color: #4b5563 !important;
+    box-shadow: inset 0 0 5px #000;
+}
+.spike-safe::after { content: "•"; color: #9ca3af; font-size: 10px; }
+
+.spike-active {
+    background-color: #7f1d1d !important; /* Dark Red */
+    box-shadow: inset 0 0 15px #ef4444;
+    transition: background-color 0.2s;
+}
+.spike-active::after { content: "▲"; color: #fff; font-weight: bold; font-size: 24px; }
+
+/* Entities */
+.player {
+    background-image: url('images/player.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated; 
+    z-index: 10;
+    transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.player span {
+    display: none;
+}
+
+.enemy {color: white; transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1); }  
+
+.enemy-normal {
+    background-image: url('images/enemy.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated; 
+}
+
+.enemy-fast {
+    background-image: url('images/fast.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    border-radius: 0; 
+    border: none !important;
+}
+
+.enemy-ranged {
+    background-image: url('images/ranged.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+    border-radius: 0;
+    border: none !important;
+}
+
+.boss {
+    background-color: #7f1d1d !important; 
+    color: #fca5a5;
+    z-index: 2;
+    border: 3px solid #ef4444 !important;
+    font-size: 28px;
+    box-shadow: 0 0 15px #ef4444;
+    transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.boss-enraged {
+    background-color: #ff0000 !important;
+    border-color: #000 !important;
+    animation: pulseAngry 0.5s infinite alternate;
+    transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Enemy Variants */
+.enemy-bat { background-color: #4b5563 !important; border-radius: 50%; border: 2px solid #9ca3af !important; font-size: 20px; }
+
+.enemy-golem {
+    background-color: #795548 !important; /* Stone Color */
+    border: 3px solid #3e2723 !important;
+    border-radius: 2px; 
+}
+
+/* CASTLE ENEMIES */
+.enemy-guard {
+    background-color: #1e40af !important; /* Royal Blue */
+    border: 3px solid #93c5fd !important; /* Light Blue Border */
+    border-radius: 0px; /* Square */
+}
+.enemy-mage {
+    background-color: #7c3aed !important; /* Violet */
+    border-radius: 50%;
+    border: 2px dotted #fff !important;
+    font-size: 22px;
+}
+
+/* Items */
+.item-potion { background-color: #10b981 !important; color: white; border-radius: 50%; font-size: 20px; font-weight: bold; z-index: 1; box-shadow: 0 0 10px #10b981; }
+.item-weapon { background-color: #fbbf24 !important; color: black; border-radius: 5px; font-weight: bold; z-index: 1; border: 2px solid #fff !important; }
+.item-relic { background-color: #ec4899 !important; color: white; border-radius: 50%; border: 2px solid white !important; box-shadow: 0 0 15px #ec4899; z-index: 1; }
+
+/* UI Panel */
+#ui-panel {
+    width: 250px;
+    background-color: #333;
+    padding: 20px;
+    border: 2px solid #555;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.stat-box { margin-bottom: 20px; }
+.log-box {
+    height: 150px;
+    overflow-y: auto;
+    background: #111;
+    padding: 10px;
+    font-size: 12px;
+    border: 1px solid #444;
+}
+.log-entry { margin-bottom: 5px; border-bottom: 1px solid #222; padding-bottom: 2px; }
+
+/* Animations */
+@keyframes flow { 0% { background-position: 0 0; } 100% { background-position: 0 50px; } }
+@keyframes pulseAngry { from { transform: scale(1); box-shadow: 0 0 10px red; } to { transform: scale(1.1); box-shadow: 0 0 25px red; } }
+@keyframes flashRed { 0% { background-color: #333; } 50% { background-color: #fff; } 100% { background-color: #ef4444; } }
+
+.screen-shake {
+    animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    box-shadow: inset 0 0 50px rgba(255, 0, 0, 0.5);
+    border-color: #ef4444 !important;
+}
+@keyframes shake {
+  10%, 90% { transform: translate3d(-2px, 0, 0); }
+  20%, 80% { transform: translate3d(4px, 0, 0); }
+  30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+  40%, 60% { transform: translate3d(6px, 0, 0); }
+}
+
+.enemy-hit-anim { animation: popFlash 0.2s ease-out; z-index: 10 !important; }
+@keyframes popFlash {
+    0% { transform: scale(1.3); background-color: #fff; }
+    50% { transform: scale(1.1); background-color: #ffcccc; }
+    100% { transform: scale(1.0); background-color: #ef4444; }
+}
+
+.player-hit-anim {
+    animation: flashRed 0.3s alternate 2;
+    background-color: #ef4444 !important;
+    box-shadow: 0 0 15px #ef4444;
+}
+
+/* Floating Text */
+.damage-text {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    font-weight: bold; font-size: 20px; z-index: 100; pointer-events: none;
+    text-shadow: 2px 2px 0 #000; animation: floatDamage 0.8s ease-out forwards;
+}
+.dmg-player { color: #ef4444; font-size: 28px; }
+.dmg-enemy { color: #fff; font-size: 20px; }
+.heal-text { color: #22c55e; font-size: 24px; animation: floatDamage 1s forwards; z-index: 100; position: absolute; pointer-events: none; font-weight: bold; text-shadow: 1px 1px 0 #000; }
+
+@keyframes floatDamage {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -200%) scale(1); opacity: 0; }
+}
+
+/* Overlays */
+#message-overlay {
+    display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.8); align-items: center; justify-content: center;
+    flex-direction: column; z-index: 20;
+}
+.btn { padding: 10px 20px; margin: 5px; cursor: pointer; border: none; font-weight: bold; font-family: inherit; }
+
+#inventory-overlay {
+    display: none;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 320px;
+    background-color: #1a1a1a;
+    border: 4px double #d4af37;
+    padding: 20px;
+    z-index: 2000;
+    box-shadow: 0 0 20px rgba(0,0,0,0.9);
+    text-align: center;
+}
+#inventory-title { color: #d4af37; border-bottom: 1px solid #444; padding-bottom: 10px; margin-top: 0; }
+#inventory-list { list-style: none; padding: 0; margin: 0; text-align: left; max-height: 250px; overflow-y: auto; }
+.inv-item { padding: 10px; border-bottom: 1px solid #333; font-size: 14px; display: flex; align-items: center; gap: 15px; }
+.inv-icon { font-size: 24px; width: 30px; text-align: center; }
+#close-inv-btn { background-color: #333; color: #eee; border: 1px solid #555; padding: 8px 20px; margin-top: 20px; cursor: pointer; }
+#close-inv-btn:hover { background-color: #555; }
+
+/* Legacy/Hidden */
+#combat-screen { display: none !important; }
+
+/* Boss HUD */
+#boss-hud { display: none; width: 100%; margin-bottom: 10px; text-align: center; }
+.boss-name-label { font-weight: bold; color: #ef4444; margin-bottom: 2px; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; }
+.boss-bar-container { width: 100%; height: 20px; background-color: #222; border: 2px solid #555; position: relative; }
+.boss-bar-fill { height: 100%; background-color: #ef4444; width: 100%; transition: width 0.3s ease-out; }
+
+/* Level 3 Specifics */
+.boulder { background-color: #5d4037 !important; color: #a1887f; border-radius: 8px; z-index: 1; border: 2px solid #3e2723 !important; }
+.boulder::after { content: "O"; font-weight: 900; font-size: 20px; }
+.boulder-cracked { opacity: 0.7; background-color: #4e342e !important; border-style: dashed !important; }
+.quake-anim { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; background-color: #d7ccc8; }
+
+/* --- TUTORIAL OVERLAY --- */
+#tutorial-overlay {
+    display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 320px; background-color: #1a1a1a; border: 4px double #3b82f6; padding: 20px;
+    z-index: 3000; text-align: center; box-shadow: 0 0 25px rgba(0,0,0,0.9);
+}
+#tutorial-title { color: #3b82f6; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+#tutorial-text { font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
+
+/* --- EX-2 BIOME --- */
+.biome-toxic .cell { background-color: #1a0f1a; border-color: #2d1b2d; }
+.biome-toxic .thicket { background-color: #3f2e18 !important; color: #a020f0; }
+.biome-toxic .thicket::after { content: "⚕"; opacity: 0.7; }
+.biome-toxic .hazard.thicket { box-shadow: inset 0 0 15px #a020f0; border: 1px dashed #ef4444; }
+
+/* --- ATTACK ANIMATIONS --- */
+
+/* --- ATTACK ANIMATIONS --- */
+
+/* --- ATTACK ANIMATIONS --- */
+
+.attack-anim {
+    position: absolute;
+    /* Match your new grid size of 60px */
+    width: 60px; 
+    height: 60px; 
+    
+    /* Center the effect inside the 60x60 box */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* Player Attack: A white/yellow swipe */
+.anim-slash::before {
+    content: ''; position: absolute; width: 140%; height: 4px;
+    background-color: #fff; box-shadow: 0 0 10px #fbbf24;
+    transform: rotate(-45deg) scaleX(0); animation: swipeAnim 0.3s ease-out forwards;
+}
+@keyframes swipeAnim {
+    0% { transform: rotate(-45deg) scaleX(0); opacity: 1; }
+    50% { transform: rotate(-45deg) scaleX(1); opacity: 1; }
+    100% { transform: rotate(-45deg) scaleX(1.2); opacity: 0; }
+}
+
+/* Enemy Melee: A red cross scratch */
+.anim-scratch::before, .anim-scratch::after {
+    content: ''; position: absolute; width: 100%; height: 3px;
+    background-color: #ef4444; box-shadow: 0 0 5px red; opacity: 0;
+}
+.anim-scratch::before { transform: rotate(45deg); animation: scratchAnim 0.4s ease-out forwards; }
+.anim-scratch::after { transform: rotate(-45deg); animation: scratchAnim 0.4s ease-out 0.1s forwards; }
+@keyframes scratchAnim {
+    0% { transform: scale(0) rotate(45deg); opacity: 1; }
+    50% { transform: scale(1.2) rotate(45deg); opacity: 1; }
+    100% { transform: scale(1.5) rotate(45deg); opacity: 0; }
+}
+
+/* Ranged/Web: A purple splat */
+
+@keyframes webSplat {
+    0% { transform: scale(0.2); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.8; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Shockwave: A ripple */
+.anim-shockwave {
+    border: 3px solid #a1887f; border-radius: 50%; animation: ripple 0.6s ease-out forwards;
+}
+@keyframes ripple {
+    0% { transform: scale(0.1); opacity: 1; border-width: 5px; }
+    100% { transform: scale(1.5); opacity: 0; border-width: 0px; }
+}
+
+/* --- EX-3: FROZEN DEPTHS --- */
+
+.biome-ice .cell {
+    background-color: #0f172a; /* Dark Navy */
+    border-color: #1e293b;
+}
+
+/* Ice Tiles */
+.tile-ice {
+    background-color: #bae6fd !important; /* Light Blue */
+    box-shadow: inset 0 0 10px #fff;
+    transition: background-color 0.3s;
+}
+.tile-ice::after {
+    content: "❄"; /* Snow/Ice symbol */
+    color: #0ea5e9;
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+/* Enemy: Yeti */
+.enemy-yeti {
+    background-color: #f1f5f9 !important; /* White/Grey */
+    border: 3px solid #cbd5e1 !important;
+    border-radius: 10px; /* Rounded square */
+    box-shadow: 0 0 10px #fff;
+}
+
+/* Enemy: Wraith */
+.enemy-wraith {
+    background-color: #3b82f6 !important; /* Blue */
+    opacity: 0.8;
+    border-radius: 50% 50% 0 0; /* Ghost shape */
+    border: 2px solid #93c5fd !important;
+}
+
+/* Boss: Ice Queen */
+.boss-ice {
+    background-color: #0ea5e9 !important;
+    border: 3px double #fff !important;
+    box-shadow: 0 0 20px #0ea5e9;
+}
+
+/* --- LEVEL 5: THE VOID --- */
+
+.biome-void .cell {
+    background-color: #0f0518; /* Deep Purple/Black */
+    border-color: #240a3a;
+}
+
+/* WARP TILES */
+.warp-tile {
+    background-color: #240a3a !important;
+    box-shadow: inset 0 0 10px #8b5cf6;
+    animation: warpPulse 2s infinite;
+}
+.warp-tile::after {
+    content: "🌀";
+    font-size: 20px;
+    opacity: 0.8;
+}
+@keyframes warpPulse {
+    0% { box-shadow: inset 0 0 5px #8b5cf6; }
+    50% { box-shadow: inset 0 0 20px #d8b4fe; }
+    100% { box-shadow: inset 0 0 5px #8b5cf6; }
+}
+
+/* SHIFTING MAZE WALLS */
+.biome-void .wall {
+    background-color: #2e1065 !important; /* Dark Violet */
+    color: #581c87;
+    border-color: #581c87 !important;
+    animation: wallGlitch 5s infinite;
+}
+@keyframes wallGlitch {
+    0% { opacity: 1; }
+    98% { opacity: 1; transform: translate(0,0); }
+    99% { opacity: 0.8; transform: translate(1px, 1px); }
+    100% { opacity: 1; transform: translate(0,0); }
+}
+
+/* VOID FLOOR (BOSS HAZARD) */
+.tile-void {
+    background-color: #000 !important;
+    border: 1px dashed #333 !important;
+}
+.tile-void::after {
+    content: "✖";
+    color: #333;
+    font-size: 10px;
+}
+
+/* ENEMIES */
+.enemy-leech {
+    background-color: #4c1d95 !important; /* Indigo */
+    border-radius: 50%;
+    box-shadow: 0 0 10px #8b5cf6;
+    font-size: 10px;
+    border: 2px solid #fff !important;
+}
+.enemy-mimic {
+    background-color: #ef4444 !important;
+    border: 2px dashed #fbbf24 !important; /* Gold dash */
+    animation: shake 0.5s infinite;
+}
+
+/* VOID SENTINEL */
+.enemy-sentinel {
+    background-color: #60a5fa !important; /* Blue */
+    border: 2px solid #1e3a8a !important; /* Dark Blue */
+    border-radius: 5px; /* Slightly rounded square */
+    box-shadow: inset 0 0 10px #1d4ed8;
+}
+.enemy-sentinel::after {
+    content: "🧲"; 
+    font-size: 18px;
+}
+
+/* BOSS: ENTROPY */
+.boss-entropy {
+    background-color: #000 !important;
+    border: 3px double #fff !important;
+    box-shadow: 0 0 25px #fff; 
+    animation: entropyPulse 1s infinite alternate;
+}
+@keyframes entropyPulse {
+    from { transform: scale(1); filter: invert(0); }
+    to { transform: scale(1.05); filter: invert(1); }
+}
+
+/* --- EX-4: CLOCKWORK DUNGEON --- */
+
+/* Conveyor Belts */
+.tile-conveyor {
+    background-color: #374151 !important;
+    border-top: 2px dashed #9ca3af !important;
+    border-bottom: 2px dashed #9ca3af !important;
+}
+.conveyor-right::after { content: "»"; color: #fbbf24; font-size: 24px; font-weight: bold; }
+.conveyor-left::after { content: "«"; color: #fbbf24; font-size: 24px; font-weight: bold; }
+
+/* Levers */
+.tile-lever {
+    background-color: #1f2937 !important;
+    box-shadow: inset 0 0 5px #000;
+}
+.tile-lever::after { content: "🕹️"; font-size: 20px; }
+
+/* Temporary Iron Wall */
+.wall-iron {
+    background-color: #4b5563 !important;
+    border: 2px solid #9ca3af !important;
+    animation: rust 0.5s;
+}
+.wall-iron::after { content: "☒"; color: #d1d5db; font-size: 24px; }
+
+/* Enemy: The Welder */
+.enemy-welder {
+    background-color: #ca8a04 !important; /* Dark Yellow */
+    border: 2px solid #fde047 !important; /* Bright Yellow */
+    border-radius: 5px;
+}
+.enemy-welder::after { content: "🔥"; font-size: 18px; }
+
+/* Boss: Gear Grinder */
+.boss-gear {
+    background-color: #b45309 !important; /* Bronze */
+    border: 4px dashed #78350f !important;
+    border-radius: 50%;
+    animation: spin 4s infinite linear;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* --- W2 BOSS: MUD MONSTER --- */
+.boss-mud {
+    background-color: #3e2723 !important; /* Dark Mud */
+    border: 4px double #8d6e63 !important;
+    box-shadow: 0 0 15px #5d4037;
+    animation: pulseMud 2s infinite;
+}
+.boss-mud::after { content: "☣"; color: #76ff03; font-size: 20px; }
+
+@keyframes pulseMud {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); border-color: #76ff03; }
+    100% { transform: scale(1); }
+}
+
+.enemy-slime {
+    background-color: #7cb342 !important; /* Slime Green */
+    border-radius: 50%;
+    border: 2px solid #33691e !important;
+    font-size: 10px;
+}
+.enemy-slime::after { content: "●"; }
+
+/* BOSS: THE TANGLER (W2-2) */
+.boss-tangler {
+    background-color: #14532d !important; /* Dark Green */
+    border: 4px solid #4ade80 !important; /* Light Green Thorns */
+    box-shadow: 0 0 15px #14532d;
+    border-radius: 0; /* Square/Blocky */
+}
+.boss-tangler::after {
+    content: "🥀"; /* Wilted Flower / Rose */
+    font-size: 24px;
+}
+
+/* --- HIGH SCORE MENU --- */
+#score-overlay {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    background-color: #1a1a1a;
+    border: 4px double #fbbf24; /* Gold border */
+    padding: 20px;
+    z-index: 3000;
+    text-align: center;
+    box-shadow: 0 0 25px rgba(0,0,0,0.9);
+}
+
+#score-title { 
+    color: #fbbf24; 
+    margin-top: 0; 
+    border-bottom: 1px solid #333; 
+    padding-bottom: 10px; 
+}
+
+#score-list-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+#score-list { list-style: none; padding: 0; margin: 0; }
+
+.score-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed #444;
+    font-size: 14px;
+}
+
+.score-entry span:last-child { color: #fbbf24; font-weight: bold; }
+
+/* --- W2-3 BOSS: ZEPHYR --- */
+.boss-zephyr {
+    background: radial-gradient(circle, #e0f2fe 30%, #0ea5e9 100%) !important; /* Sky colors */
+    border: 4px double #fff !important;
+    box-shadow: 0 0 20px #bae6fd;
+    border-radius: 50% 50% 0 50% !important; /* Wing shape */
+    animation: floatZephyr 1s infinite alternate ease-in-out;
+}
+.boss-zephyr::after {
+    content: "🦅"; /* Eagle/Bird icon */
+    font-size: 24px;
+    filter: drop-shadow(0 0 2px #fff);
+}
+
+@keyframes floatZephyr {
+    from { transform: translateY(0); }
+    to { transform: translateY(-5px); }
+}
+
+.hazard-feather {
+    background: radial-gradient(circle, #e0f2fe 30%, #0ea5e9 100%) !important; /* Sky colors */
+    border: 2px solid #fff !important;
+    box-shadow: 0 0 10px #bae6fd;
+    border-radius: 50%;
+}
+
+/* --- Warning Zones --- */
+.tile-wind-warning {
+    background-color: #fef3c7 !important; /* Light Yellow */
+    box-shadow: inset 0 0 15px #f59e0b; /* Amber Glow */
+    animation: flashWarning 0.5s infinite alternate;
+}
+.tile-wind-warning::after {
+    content: "💨";
+    opacity: 0.5;
+    font-size: 20px;
+}
+
+@keyframes flashWarning {
+    from { opacity: 0.6; }
+    to { opacity: 1; }
+}
+
+#tooltip {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.9);
+    border: 1px solid #fbbf24;
+    color: #eee;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none; /* Important so it doesn't block clicks */
+    display: none;
+    z-index: 5000;
+    white-space: pre-line; /* Allows line breaks */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+@keyframes idleBob {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
+
+/* --- HP BARS --- */
+.hp-bar-container {
+    width: 100%;
+    height: 10px;
+    background-color: #444;
+    border: 1px solid #666;
+    margin-top: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    background-color: #ef4444; /* Red */
+    width: 100%;
+    transition: width 0.3s ease-out;
+}
+
+/* Mini HP bar for enemies inside cells */
+.enemy-hp-container {
+    position: absolute;
+    bottom: 2px;
+    width: 80%;
+    height: 4px;
+    background: #000;
+    border: 1px solid #333;
+    z-index: 5;
+}
+.enemy-hp-fill {
+    height: 100%;
+    background: #ef4444;
+}
+
+/* --- DEATH PARTICLES --- */
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    pointer-events: none;
+    z-index: 100;
+    animation: particle-burst 0.6s ease-out forwards;
+}
+
+@keyframes particle-burst {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+/* Red pulse for tiles enemies are planning to attack */
+.tile-intent {
+    position: relative;
+    box-shadow: inset 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+.tile-intent::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(239, 68, 68, 0.15);
+    animation: intentPulse 1.5s infinite alternate ease-in-out;
+    pointer-events: none;
+}
+
+@keyframes intentPulse {
+    from { opacity: 0.2; }
+    to { opacity: 0.6; }
+}
+
+/* World 3 Theme */
+.biome-magma .cell { background-color: #2b0a0d; border-color: #4a1c1c; }
+
+/* New Mechanic: Crumbling Floor */
+.tile-crumble {
+    background-color: #3e2723 !important;
+    border: 2px dashed #a1887f !important;
+}
+.tile-crumble::after {
+    content: "⚡"; /* A crack symbol */
+    color: #a1887f;
+    opacity: 0.5;
+    font-size: 20px;
+    transform: rotate(90deg);
+}
+
+/* The Pit (Result of crumbling) */
+/* Update this section in your CSS */
+.tile-pit {
+    background-color: #000 !important; /* Pitch black */
+    border: 1px dashed #333 !important; /* subtle dashed border */
+    box-shadow: inset 0 0 10px #000;
+}
+
+.tile-pit::after {
+    content: "✖"; /* Same icon as void tiles */
+    color: #333;
+    font-size: 10px;
+}
+
+/* --- LEVEL 3: EXPLOSIVE CRYSTALS --- */
+.crystal {
+    background-color: #7f1d1d !important; /* Dark Red */
+    border: 2px solid #ef4444 !important; /* Bright Red */
+    border-radius: 50%; /* Roundish like a geode */
+    box-shadow: 0 0 5px #ef4444;
+    z-index: 2;
+}
+.crystal::after {
+    content: "♦";
+    color: #fca5a5;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.crystal-ignited {
+    background-color: #fff !important; /* Flash white */
+    border-color: #ff0000 !important;
+    animation: pulseAngry 0.2s infinite alternate; /* Fast pulse */
+}
+.crystal-ignited::after {
+    content: "3"; /* Countdown visuals or just the symbol */
+    color: #ff0000;
+}
+
+/* --- DIALOGUE SYSTEM --- */
+#dialogue-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 4000;
+    /* Optional: slightly darken the game behind the text */
+    background: rgba(0, 0, 0, 0.2); 
+}
+
+#dialogue-box {
+    position: absolute;
+    bottom: 30px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    max-width: 90%;
+    background-color: #222;
+    border: 4px double #fbbf24; /* Gold border */
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+    font-family: 'Courier New', monospace; /* Or 'Press Start 2P' if you have it */
+    color: #eee;
+}
+
+#dialogue-speaker {
+    margin-top: 0;
+    color: #fbbf24;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#dialogue-text {
+    font-size: 16px;
+    line-height: 1.5;
+    min-height: 50px;
+}
+
+.blink { animation: blinker 1s linear infinite; color: #888; }
+@keyframes blinker { 50% { opacity: 0; } }
+
+/* Add inside #ui-panel .stat-box */
+.xp-bar-container {
+    width: 100%; height: 8px; background: #222; 
+    border: 1px solid #444; margin-top: 5px; position: relative;
+}
+.xp-bar-fill {
+    height: 100%; background: #a855f7; /* Purple */ width: 0%;
+    transition: width 0.3s ease-out;
+}
+.level-badge {
+    float: right; color: #a855f7; font-weight: bold;
+}
+
+/* New Level Up Overlay */
+#levelup-overlay {
+    display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9); z-index: 5000;
+    flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+}
+.skill-card {
+    border: 2px solid #a855f7; background: #2d2d2d;
+    padding: 15px; margin: 10px; cursor: pointer; width: 200px;
+    transition: transform 0.2s;
+}
+.skill-card:hover { transform: scale(1.05); background: #3d3d3d; }
+.skill-icon { font-size: 24px; display: block; margin-bottom: 5px; }
+
+/* --- ENHANCED MAP OVERLAY --- */
+
+#map-overlay {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    
+    /* polished visual style */
+    background: rgba(15, 15, 20, 0.95); 
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 25px;
+    z-index: 6000;
+    
+    /* fancy effects */
+    box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 20px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px); /* Blurs the game behind it */
+    
+    /* Animation defaults */
+    animation: mapPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* The Pop-In Animation */
+@keyframes mapPopIn {
+    0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+}
+
+/* Grid Container */
+#minimap-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px; /* Bigger gaps look cleaner */
+    margin: 20px 0;
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+}
+
+/* Base Room Style (Unexplored/Uncleared) */
+.map-room {
+    aspect-ratio: 1 / 1;
+    background-color: #262626;
+    border: 2px solid #333;
+    border-radius: 6px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Cleared Room (Green) */
+.map-room.cleared {
+    background-color: #064e3b; /* Darker, richer green */
+    border-color: #10b981;     /* Bright green border */
+    box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.2);
+}
+.map-room.cleared::after {
+    content: "✓";
+    color: #10b981;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+/* Current Player Location (Gold) */
+.map-room.current {
+    background-color: #451a03; /* Dark orange/brown background */
+    border: 2px solid #fbbf24; /* Gold border */
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.4);
+    transform: scale(1.1); /* Slightly larger than others */
+    z-index: 10;
+}
+
+/* Player Icon */
+.map-room.current::after {
+    content: "🧙"; /* Wizard Icon */
+    font-size: 20px;
+    opacity: 1;
+    animation: bounceIcon 1s infinite alternate;
+}
+
+@keyframes bounceIcon {
+    from { transform: translate(-50%, -50%); }
+    to { transform: translate(-50%, -60%); }
+}
+
+/* --- ENHANCED MAP OVERLAY --- */
+
+#map-overlay {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* NEW: Auto-sizing logic */
+    width: fit-content;  /* Wraps tight around the map */
+    height: fit-content; /* Wraps tight vertically */
+    
+    /* NEW: Safety limits so it doesn't go off-screen */
+    max-width: 95vw;     /* Max 95% of screen width */
+    max-height: 95vh;    /* Max 95% of screen height */
+    
+    /* Layout */
+    display: flex;
+    flex-direction: column; /* Stack Title -> Map -> Button */
+    
+    background: rgba(15, 15, 20, 0.98); 
+    border: 2px solid #fbbf24; /* Gold border looks better */
+    border-radius: 12px;
+    padding: 20px;
+    z-index: 6000;
+    
+    box-shadow: 0 0 50px rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    
+    animation: mapPopIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* The Grid Container */
+#minimap-grid {
+    display: grid;
+    
+    /* Dynamic sizing for rows/cols */
+    grid-auto-columns: 40px; 
+    grid-auto-rows: 40px;
+    gap: 8px;
+    
+    margin: 15px 0;
+    padding: 15px;
+    
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    
+    /* NEW: Scroll ONLY the grid if it hits the screen edge */
+    overflow: auto; 
+    
+    /* Center the rooms inside the scroll area */
+    justify-content: center;
+    align-content: center;
+}
+
+/* Keep the rest of your button/title styles below... */
+#map-overlay h2 {
+    margin: 0 0 10px 0;
+    flex-shrink: 0; /* Prevents title from squishing */
+}
+
+#map-overlay .btn {
+    flex-shrink: 0; /* Prevents button from squishing */
+    margin-top: 10px;
+}
+
+/* Achievement Toast */
+.achievement-toast {
+    position: fixed;
+    top: 20px;
+    right: -300px; /* Hidden by default */
+    width: 260px;
+    background: rgba(34, 34, 34, 0.95);
+    border: 2px solid #fbbf24;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 10000;
+    transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    font-family: 'Inter', sans-serif;
+}
+
+.achievement-toast.show {
+    right: 20px;
+}
+
+/* PROFILE MENU STYLES */
+.profile-card {
+    background: #222;
+    border: 2px solid #555;
+    padding: 20px;
+    width: 150px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.profile-card:hover {
+    border-color: #fbbf24; /* Gold */
+    background: #333;
+    transform: scale(1.05);
+}
+
+.profile-card h4 {
+    color: #fbbf24;
+    margin: 0 0 10px 0;
+}
+
+.profile-info {
+    color: #ccc;
+    font-size: 12px;
+}
+
+.profile-empty {
+    color: #666;
+    font-style: italic;
+}
+
+/* ACHIEVEMENTS MENU */
+#achievements-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1a1a1a;
+    border: 2px solid #fbbf24;
+    padding: 20px;
+    z-index: 8000;
+    width: 80%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.8);
+}
+
+#achievements-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+}
+
+.ach-card {
+    background: #333;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border: 1px solid #444;
+}
+
+.ach-card.unlocked {
+    border-color: #fbbf24;
+    background: #2d2d2d;
+}
+
+.ach-card.locked {
+    opacity: 0.5;
+    filter: grayscale(100%);
+}
+
+.ach-icon {
+    font-size: 30px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.ach-info h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+}
+
+.ach-info p {
+    margin: 5px 0 0 0;
+    font-size: 11px;
+    color: #aaa;
+}
+
+.boss-dragonfly {
+    /* Overwrite the standard red boss color */
+    background: linear-gradient(135deg, #064e3b 0%, #10b981 100%) !important; 
+    
+    /* Neon Green Border */
+    border: 3px double #34d399 !important;
+    
+    /* Glowing Effect */
+    box-shadow: 0 0 20px #10b981, inset 0 0 10px #064e3b;
+    
+    /* Unique Shape: Rounded top (wings) and pointed bottom */
+    border-radius: 50% 50% 10% 10% !important; 
+    
+    /* Animation: Hovering up and down */
+    animation: dragonflyHover 0.3s infinite alternate ease-in-out;
+    z-index: 20;
+}
+
+@keyframes dragonflyHover {
+    from { transform: translateY(0); }
+    to { transform: translateY(-4px); }
+}
