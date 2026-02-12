@@ -20,7 +20,7 @@ const LEVELS = {
             { pos: "A1", targetLevel: 'World-Select', targetPos: "E6", type: "portal", label: "W" },
             { pos: "C1", targetLevel: 'Endless-Start', targetPos: "E9", type: "portal", label: "∞" },
             { pos: "I1", type: "portal", redirect: "editor.html", label: "E" },
-            { pos: "E3", targetLevel: 'Tutorial-1', targetPos: "E2", type: "portal", label: "?" },
+            { pos: "E1", targetLevel: 'Tutorial-1', targetPos: "E2", type: "portal", label: "?" },
             { pos: "G1", targetLevel: '0D', targetPos: "E6", type: "portal", label: "D" },
             { pos: "E9", targetLevel: 'Credits', targetPos: "E5", type: "portal", label: "C"}
         ],
@@ -4196,4 +4196,5 @@ bgmPlayer.addEventListener('ended', function() {
 });
 
 // Don't start game immediately. Show menu first.
+
 initProfileMenu();
