@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Wacky Wizard Launcher</title>
+    <link rel="stylesheet" href="rpg.css">
+</head>
+<body>
+    <h2>Game Launcher</h2>
+    <p>Click below to open the game in its own window.</p>
+    <div>
+    <button onclick="launchGame()" style="padding: 20px; font-size: 20px; cursor: pointer; background-color:chartreuse">
+        Open Game in New Window
+    </button>
+        <button style="padding: 20px; font-size: 20px; cursor: pointer; background-color:cyan">
+            <a href="index.html" target="_blank" style="text-decoration: none; color: inherit;">Open Game in New Tab</a>
+    </button>
+    </div>
+
+    <script>
+        function launchGame() {
+            window.open('index.html', 'TheWackyWizard', 'width=1000,height=850,menubar=no,toolbar=no,location=no,status=no,resizable=yes');
+        }
+    </script>
+</body>
+</html>
