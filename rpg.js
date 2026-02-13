@@ -20,6 +20,7 @@ const LEVELS = {
             { pos: "A1", targetLevel: 'World-Select', targetPos: "E6", type: "portal", label: "W" },
             { pos: "C1", targetLevel: 'Endless-Start', targetPos: "E9", type: "portal", label: "∞" },
             { pos: "I1", type: "portal", redirect: "editor.html", label: "E" },
+            { pos: "I5", type: "door", redirect: "launcher.html", label: "L" },
             { pos: "E1", targetLevel: 'Tutorial-1', targetPos: "E2", type: "portal", label: "?" },
             { pos: "G1", targetLevel: '0D', targetPos: "E6", type: "portal", label: "D" },
             { pos: "E9", targetLevel: 'Credits', targetPos: "E5", type: "portal", label: "C"}
@@ -741,6 +742,7 @@ let endlessDepth = 0;
 let endlessBiome = "biome-sewer"; 
 let dialogueQueue = []; 
 let isDialogueOpen = false;
+let bouldersDestroyed = 0;
 
 function parseCoord(coordString) {
     const colChar = coordString.charAt(0).toUpperCase();
@@ -1240,17 +1242,20 @@ function loadLevel(levelId, startCoord) {
     // NEW: Reset damage tracker for "Untouchable" achievement
     levelDamageTaken = false; 
     
+    // NEW: Reset boulder tracker for "Mine Sweeper" achievement
+    bouldersDestroyed = 0;
+    
     if (levelId === '2-CD') {
         if (typeof unlockAchievement === 'function') unlockAchievement('dungeon_crawler');
     }
 
-    if (levelId === '0D') {
+    if (levelId === '0D' || levelId === 'World-Select') {
         regenerateDungeon(); 
         resetRPGStats();
         player.hp = player.maxHp;
         log("New Dungeon Run started! Level reset to 1.");
     }
-    
+
     // Endless Mode
     if (levelId === 'Endless-Start') {
         endlessDepth = 1;
@@ -1863,6 +1868,9 @@ function consumeAction() {
                                 player.hp -= 5;
                                 triggerDamage(player.x, player.y, 5, true);
                                 log("Caught in the blast! -5 HP");
+                                
+                                // NEW: Achievement - Self Sabotage
+                                if (typeof unlockAchievement === 'function') unlockAchievement('self_sabotage');
                             }
 
                             // B. Damage Enemies (Fixed 15 Damage)
@@ -2220,21 +2228,25 @@ function playerAttack() {
 
                 if (typeof unlockAchievement === 'function') {
                     unlockAchievement('first_kill');
-                    if (enemy.isBoss) unlockAchievement('boss_slayer');
+                    if (enemy.isBoss) {
+                        unlockAchievement('boss_slayer');
+                        // NEW: Achievement - Bare Bones (Base DMG is 2)
+                        if (player.damage <= 2) unlockAchievement('bare_bones');
+                    }
 
                     const remainingEnemies = enemies.filter(e => e.alive).length;
                     if (currentLevelId === 'Tutorial-Boss' && remainingEnemies === 0) {
                         unlockAchievement('tutorial_complete');
                     }
 
-                    if (currentLevelId === '1-5' && enemy.isBoss) {
+                    if (currentLevelId === '5-Boss' && enemy.isBoss) {
                         unlockAchievement('world_1_5');
                     }
 
                     // --- NEW: Untouchable & EX Conqueror ---
                     if (enemy.isBoss) {
                         if (!levelDamageTaken) unlockAchievement('untouchable');
-                        if (currentLevelId.startsWith('EX')) unlockAchievement('ex_conqueror');
+                        if (currentLevelId.startsWith('EX-')) unlockAchievement('ex_conqueror');
                     }
                 }
 
@@ -2273,6 +2285,10 @@ function playerAttack() {
                 log("Boulder destroyed!");
 
                 if (typeof unlockAchievement === 'function') unlockAchievement('demolitionist');
+                
+                // NEW: Achievement - Mine Sweeper
+                bouldersDestroyed++;
+                if (bouldersDestroyed >= 3 && typeof unlockAchievement === 'function') unlockAchievement('mine_sweeper');
 
                 const roll = Math.random();
 
@@ -2359,6 +2375,9 @@ function handleTurn(dx, dy) {
 
     const warp = currentMap.warps && currentMap.warps.find(w => w.pos === `${ALPHABET[finalX]}${finalY+1}`);
     if (warp) {
+        // NEW: Achievement - Calculated Risk
+        if (player.hp <= 3 && typeof unlockAchievement === 'function') unlockAchievement('calculated_risk');
+
         const target = parseCoord(warp.target);
         finalX = target.x; finalY = target.y;
         log("Entered a Void Warp!");
@@ -2402,6 +2421,11 @@ function handleTurn(dx, dy) {
         if (enemies.filter(e => e.alive).length > 0) {
             log("Defeat all enemies to proceed!");
             targetPortal = null; // Cancel the movement
+        } else {
+             // NEW: Achievement - Hoarder (Check if any potions are left)
+             if (items.some(i => i.type === 'potion' && !i.collected)) {
+                 if (typeof unlockAchievement === 'function') unlockAchievement('hoarder');
+             }
         }
     }
     // --- UPDATED SMART DOOR LOGIC END ---
@@ -2468,6 +2492,10 @@ function handleTurn(dx, dy) {
     if (currentMap.pits && currentMap.pits.includes(`${ALPHABET[finalX]}${finalY+1}`)) {
          player.hp -= 5; 
          triggerDamage(player.x, player.y, 5, true);
+         
+         // NEW: Achievement - Curiosity
+         if (player.hp <= 0 && typeof unlockAchievement === 'function') unlockAchievement('curiosity');
+         
          log("Fell into the abyss! -5 HP");
          currentLevelScore -= 50;
          updateStats();
@@ -2506,6 +2534,10 @@ function handleTurn(dx, dy) {
     if (voidRadius > 0) {
         if (finalX < voidRadius || finalX >= GRID_SIZE - voidRadius || finalY < voidRadius || finalY >= GRID_SIZE - voidRadius) {
             player.hp -= 5; triggerDamage(player.x, player.y, 5, true);
+            
+            // NEW: Achievement - Curiosity
+            if (player.hp <= 0 && typeof unlockAchievement === 'function') unlockAchievement('curiosity');
+            
             log("THE VOID CONSUMES YOU! -5 HP");
             currentLevelScore -= 100; 
             updateStats();
@@ -2580,7 +2612,7 @@ function processOneEnemyTurn(enemy) {
 
         if (enemy.isBoss) {
             enemy.summonCooldown = (enemy.summonCooldown || 0) + 1;
-            if (enemy.summonCooldown >= 4) {
+            if (enemy.summonCooldown >= 15) {
                  const openSpots = [
                     {x: enemy.x-1, y: enemy.y}, {x: enemy.x+1, y: enemy.y}, 
                     {x: enemy.x, y: enemy.y-1}, {x: enemy.x, y: enemy.y+1},
@@ -2591,18 +2623,19 @@ function processOneEnemyTurn(enemy) {
                  openSpots.sort(() => Math.random() - 0.5);
 
                  if (openSpots.length > 0) {
+                     // SPAWN SLIME INSTEAD OF MELEE
                      const spawnCount = 1;
                      for(let i=0; i<spawnCount; i++) {
                         const spawn = openSpots[i];
                         enemies.push({ 
                             id: enemies.length, 
                             x: spawn.x, y: spawn.y, 
-                            hp: 10, maxHp: 10, 
-                            alive: true, type: 'melee', 
+                            hp: 4, maxHp: 4, // Lower HP for slimes
+                            alive: true, type: 'slime', 
                             wasHit: false 
                         });
                      }
-                     log("The Mud Monster flings sludge! Enemies appear!");
+                     log("The Mud Monster flings sludge! A Slime appears!");
                      enemy.summonCooldown = 0;
                      return true; 
                  }
@@ -3240,6 +3273,9 @@ function moveEnemies() {
                      if(enemy.hp <= 0) {
                         enemy.alive = false; log("Enemy died in trap!");
                         
+                        // NEW: Achievement - Environmental Specialist
+                        if (typeof unlockAchievement === 'function') unlockAchievement('environmental_specialist');
+                        
                         // --- NEW: Dungeon Persistence for Traps ---
                         if (currentLevelId.endsWith('D')) {
                             const globalLevel = LEVELS[currentLevelId];
@@ -3557,6 +3593,11 @@ function gainXp(amount) {
         if (player.level >= 5 && typeof unlockAchievement === 'function') {
             unlockAchievement('level_5');
         }
+        
+        // NEW: Achievement - Glass Cannon
+        if (currentLevelId.endsWith('D') && player.level >= 10 && player.maxHp <= 15) {
+            if (typeof unlockAchievement === 'function') unlockAchievement('glass_cannon');
+        }
 
         player.maxXp = Math.floor(player.maxXp * 1.5); // Harder to level up each time
         showLevelUpMenu();
@@ -3729,6 +3770,12 @@ function castSkill(name) {
     if (name === 'heal') {
         player.hp = Math.min(player.hp + 3, player.maxHp);
         triggerHeal(player.x, player.y, 3);
+        
+        // NEW: Achievement - Medic
+        if (enemies.some(e => e.alive && e.isBoss) && player.hp === player.maxHp) {
+            if (typeof unlockAchievement === 'function') unlockAchievement('medic');
+        }
+
         player.cooldowns.heal = 3; playerActionsLeft -= 1; actionUsed = true;
         log("Used Mend: +3 HP");
     }
@@ -3736,11 +3783,15 @@ function castSkill(name) {
         if (playerActionsLeft < 2) { log("Cleave requires 2 Actions!"); return; }
         log("Used Cleave!");
         const adj = [{x:0,y:1},{x:0,y:-1},{x:1,y:0},{x:-1,y:0},{x:1,y:1},{x:1,y:-1},{x:-1,y:1},{x:-1,y:-1}];
+        
+        let enemiesHit = 0; // NEW: Counter for Combo Master
+
         adj.forEach(offset => {
             const tx = player.x + offset.x; const ty = player.y + offset.y;
             triggerAttackAnim(tx, ty, 'anim-slash');
             const enemy = enemies.find(e => e.x === tx && e.y === ty && e.alive);
             if (enemy) {
+                enemiesHit++; // Increment
                 enemy.hp -= player.damage;
                 triggerDamage(enemy.x, enemy.y, player.damage, false);
                 if (enemy.hp > 0 && !enemy.isBoss) {
@@ -3752,6 +3803,10 @@ function castSkill(name) {
                 if (enemy.hp <= 0) { enemy.alive = false; gainXp(30); }
             }
         });
+        
+        // NEW: Achievement - Combo Master
+        if (enemiesHit >= 3 && typeof unlockAchievement === 'function') unlockAchievement('combo_master');
+
         player.cooldowns.cleave = 5; playerActionsLeft -= 2; actionUsed = true;
     }
     if (name === 'dash') {
@@ -4196,5 +4251,4 @@ bgmPlayer.addEventListener('ended', function() {
 });
 
 // Don't start game immediately. Show menu first.
-
 initProfileMenu();
