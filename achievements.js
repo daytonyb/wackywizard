@@ -27,8 +27,8 @@ const ACHIEVEMENTS = {
 
     // --- PROGRESSION ---
     'tutorial_complete': { name: "Graduate", desc: "Complete the Tutorial.", icon: "🎓" },
-    'world_1_5': { name: "Apprentice", desc: "Beat World 1-5.", icon: "🌟" },
-    'dungeon_crawler': { name: "Deep Diver", desc: "Reach Dungeon Floor 2 (2-CD).", icon: "🗝️" },
+    'world_1_5': { name: "Apprentice", desc: "Beat World 1 Level 5.", icon: "🌟" },
+    'dungeon_crawler': { name: "Deep Diver", desc: "Beat Dungeon Floor 2 (2-CD).", icon: "🗝️" },
     'veteran': { name: "Veteran", desc: "Reach Player Level 10.", icon: "🎖️" },
     'master_wizard': { name: "Master Wizard", desc: "Reach Player Level 15.", icon: "🧙‍♂️" },
     'legend': { name: "Legend", desc: "Reach Player Level 20.", icon: "👑" },
@@ -41,9 +41,21 @@ const ACHIEVEMENTS = {
 
     // --- SCORING & ENDLESS ---
     'high_roller': { name: "High Roller", desc: "Score 1000 points in a single level.", icon: "💰" },
-    'score_king': { name: "Score King", desc: "Amass 5000 points total.", icon: "👑" },
+    'score_king': { name: "Score King", desc: "Score 5000 points in a single level.", icon: "👑" },
     'abyss_walker': { name: "Abyss Walker", desc: "Reach Depth 5 in Endless Mode.", icon: "🌀" },
-    'void_lord': { name: "Void Lord", desc: "Reach Depth 10 in Endless Mode.", icon: "🌌" }
+    'void_lord': { name: "Void Lord", desc: "Reach Depth 10 in Endless Mode.", icon: "🌌" },
+
+    // --- CHALLENGE & SECRET ---
+    'environmental_specialist': { name: "Biohazard", desc: "Defeat an enemy using hazards (Spikes/Sludge).", icon: "☣️" },
+    'calculated_risk': { name: "Calculated Risk", desc: "Enter a Warp with 3 HP or less.", icon: "🎲" },
+    'mine_sweeper': { name: "Mine Sweeper", desc: "Destroy 3 Boulders in one level.", icon: "🧹" },
+    'bare_bones': { name: "Bare Bones", desc: "Beat a World Boss with starting damage (2).", icon: "🦴" },
+    'glass_cannon': { name: "Glass Cannon", desc: "Reach Level 10 in Dungeon Mode with base HP (15).", icon: "🔫" },
+    'medic': { name: "Medic!", desc: "Heal to full HP during a Boss fight.", icon: "🚑" },
+    'combo_master': { name: "Combo Master", desc: "Hit 3+ enemies with one Cleave.", icon: "🌪️" },
+    'self_sabotage': { name: "Self-Sabotage", desc: "Get hit by your own Bomb.", icon: "💣" },
+    'curiosity': { name: "Curiosity", desc: "Die by falling into the Void.", icon: "🐈" },
+    'hoarder': { name: "Hoarder", desc: "Finish a level leaving a Potion behind.", icon: "🎒" }
 };
 
 let unlockedAchievements = [];
