@@ -28,6 +28,7 @@ const ACHIEVEMENTS = {
     // --- PROGRESSION ---
     'tutorial_complete': { name: "Graduate", desc: "Complete the Tutorial.", icon: "🎓" },
     'world_1_5': { name: "Apprentice", desc: "Beat World 1 Level 5.", icon: "🌟" },
+    'world_2_5': { name: "Journeyman", desc: "Beat World 2 Level 5.", icon: "🌠" },
     'dungeon_crawler': { name: "Deep Diver", desc: "Beat Dungeon Floor 2 (2-CD).", icon: "🗝️" },
     'veteran': { name: "Veteran", desc: "Reach Player Level 10.", icon: "🎖️" },
     'master_wizard': { name: "Master Wizard", desc: "Reach Player Level 15.", icon: "🧙‍♂️" },
