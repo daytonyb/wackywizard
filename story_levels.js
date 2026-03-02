@@ -1,4 +1,4 @@
-// --- STORY MODE LEVELS ---
+// --- DUNGEON MODE LEVELS ---
 // This file is separate from rpg.js but uses the exact same format.
 
 const STORY_CAMPAIGN = {
