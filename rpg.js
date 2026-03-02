@@ -594,7 +594,88 @@ const LEVELS = {
             { pos: "E5", isBoss: true, type: "king", hp: 50}
         ] 
     },
+            'W2-5': { 
+        name: "250 Swampy Forests", 
+        walls: ["I2","H2","B2","D2","F2","G2"], 
+        portals: [
+            { pos: "A1", targetLevel: 'W2-5-1', targetPos: "A1", type: "portal", label: "1" },
+            { pos: "C1", targetLevel: 'W2-5-2', targetPos: "A1", type: "portal", label: "2" },
+            { pos: "E1", targetLevel: 'W2-5-3', targetPos: "A1", type: "portal", label: "3" },
+            { pos: "E9", targetLevel: 'World-2-Select', targetPos: "E6", type: "door" },
+            { pos: "I1", type: "portal", label: "B" },
+        ],
+    },
+            'W2-5-1': { 
+        name: "251 ", 
+        walls: ["D1","D2","D3","D4","D5","D6","A4","B4","C4","E4","F4","G7","H7","I7","G8","G9"], 
+        enemies: [
+            {pos: "A9", type: "sentinel"},{pos: "B9", type: "sentinel"},{pos: "C9", type: "sentinel"},{pos: "I1", type: "sentinel"},{pos: "I2", type: "sentinel"},{pos: "I3", type: "sentinel"},{pos: "E5", type: "mage"},{pos: "H9", type: "mage"},{pos: "I8", type: "mage"},{pos: "E6", type: "ranged"},{pos: "F5", type: "ranged"},{pos: "F6", type: "ranged"},
+        ],
+        warps: [
+            {pos: "C1", target: "E1"},{pos: "A3", target: "A5"},{pos: "C3", target: "H8"},{pos: "B5", target: "B3"},{pos: "E2", target: "C2"},{pos: "H8", target: "C3"},
+        ],
+        portals: [
+            { pos: "I9", targetLevel: 'W2-5', targetPos: "E6", type: "door" },
+        ],
+    },
+                'W2-5-2': { 
+        name: "252 ", 
+        walls: ["F2","G2","F3","G3","H3","G4","H4","B6","C6","B7","C7","D7","C8","D8"],
+        hazards: ["E2","B5","E5","H5","E8"],
+        enemies: [
+            {pos: "F5", type: "golem"},{pos: "E6", type: "golem"},{pos: "A9", type: "ranged"},{pos: "I1", type: "ranged"},{pos: "A8", type: "mage"},{pos: "B9", type: "mage"},{pos: "H1", type: "mage"},{pos: "I2", type: "mage"},
+        ],
+        warps: [
+            {pos: "A6", target: "C9"},{pos: "C9", target: "A6"},{pos: "A7", target: "D9"},{pos: "D9", target: "A7"},{pos: "B8", target: "H2"},{pos: "H2", target: "B8"},{pos: "F1", target: "I3"},{pos: "I3", target: "F1"},{pos: "G1", target: "I4"},{pos: "I4", target: "G1"},
+        ],
+        portals: [
+            { pos: "I9", targetLevel: 'W2-5', targetPos: "E6", type: "door" },
+        ],
+    },
+                    'W2-5-3': { 
+        name: "253 ", 
+        walls: ["C1","C2","C3","B3","A3","E3","G1","G2","G3","I3","C5","G5","E7","A7","B7","C7","C9","G7","H7","G8"], 
+        enemies: [
+            {pos: "H8", type: "golem"},{pos: "C4"},{pos: "D3"},{pos: "I5", type: "ranged"},{pos: "E9", type: "ranged"},{pos: "F6", type: "fast"},{pos: "E4", type: "mage"},{pos: "D5", type: "mage"},{pos: "F5", type: "mage"},{pos: "E6", type: "mage"},
+        ],
+        warps: [
+            {pos: "B1", target: "D1"},{pos: "A2", target: "A4"},{pos: "H1", target: "F1"},{pos: "I2", target: "I4"},{pos: "A8", target: "A6"},{pos: "B9", target: "D9"},{pos: "D4", target: "A1"},{pos: "F4", target: "H2"},{pos: "D6", target: "B8"},
+        ],
+        hazards: ["E1","A5","I1","A9","B2"],
+        portals: [
+            { pos: "I9", targetLevel: 'W2-5', targetPos: "E6", type: "door" },
+        ],
+    },
+'W2-5-4': { 
+        name: "25B ", 
+        walls: [
+            "A1","I1","A9","I9","C5","G5","E3","E7"
+        ], 
+        hazards: ["A2","A8","I2","I8","G1","G9","C1","C9"], 
+        thickets: [],
+        portals: [
+            { pos: "E9", targetLevel: 'W2-5-5', targetPos: "E6", type: "door" }, 
+        ],
+        enemies: [
+            { pos: "E5", isBoss: true, hp: 100 },
+            { pos: "E5", isBoss: true, hp: 100 },
+            { pos: "E5", isBoss: true, hp: 100 },
+        ] 
+    },
+'W2-5-5': { 
+        name: "Congratulations!", 
+        walls: [
 
+        ], 
+        hazards: [], 
+        thickets: [],
+        portals: [
+            { pos: "E9", targetLevel: 'W2-5', targetPos: "E6", type: "door" }, 
+        ],
+        enemies: [
+            { pos: "E5", isBoss: true, hp: 750},
+        ] 
+    },
         'World-3-Select': {
         name: "300 - New Introductions",
         walls: ["B2", "C2", "D2", "E2", "F2", "G2", "H2", "I2"], 
@@ -962,6 +1043,25 @@ function applyGlobalUnlocks() {
         }
     }
 
+        if (gameProgress.w2l4Complete) {
+        const hub = LEVELS['World-2-Select'];
+        // Remove Wall at I2 to open path to Level 5
+        const wIndex = hub.walls.indexOf("I2");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+            log("Path to Level 4 is open!");
+        }
+    }
+
+            if (gameProgress.w2l5Complete) {
+        const hub = LEVELS['World-Select'];
+        const wIndex = hub.walls.indexOf("I7");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+            log("A wall crumbles open...");
+        }
+    }
+
     if (gameProgress.story1Complete) {
         const storyHub = LEVELS['Story-Select'];       
         if (storyHub) {
@@ -1303,6 +1403,12 @@ function loadLevel(levelId, startCoord) {
         if (wIndex > -1) LEVELS['W2-4'].walls.splice(wIndex, 1);
         const bossPort = LEVELS['W2-4'].portals.find(p => p.label === "B");
         if (bossPort) { bossPort.targetLevel = 'W2-4-4'; bossPort.targetPos = "E9"; }
+    }
+        if (levelId === 'W2-5' && gameProgress.w2l5s1 && gameProgress.w2l5s2 && gameProgress.w2l5s3) {
+        const wIndex = LEVELS['W2-5'].walls.indexOf("I2");
+        if (wIndex > -1) LEVELS['W2-5'].walls.splice(wIndex, 1);
+        const bossPort = LEVELS['W2-5'].portals.find(p => p.label === "B");
+        if (bossPort) { bossPort.targetLevel = 'W2-5-4'; bossPort.targetPos = "E9"; }
     }
 
 
@@ -2013,6 +2119,10 @@ if (e.key === 'm' || e.key === 'M') {
         gameProgress.w2l4s2 = true;
         gameProgress.w2l4s3 = true;
 
+        gameProgress.w2l5s1 = true;
+        gameProgress.w2l5s2 = true;
+        gameProgress.w2l5s3 = true;
+
 
 
         gameProgress.w3l1s1 = true;
@@ -2026,6 +2136,10 @@ if (e.key === 'm' || e.key === 'M') {
         gameProgress.w2l2Complete = true;
 
         gameProgress.w2l3Complete = true;
+
+        gameProgress.w2l4Complete = true;
+
+        gameProgress.w2l5Complete = true;
 
         gameProgress.story1Complete = true;
 
@@ -2164,6 +2278,7 @@ function playerAttack() {
             if (currentLevelId === 'W2-2-4') dmg = 4;
             if (currentLevelId === 'W2-3-4') dmg = 4;
             if (currentLevelId === 'W2-4-4') dmg = 4;
+            if (currentLevelId === 'W2-5-4') dmg = 4;
 
             if (dmg >= 10 && typeof unlockAchievement === 'function') unlockAchievement('heavy_hitter');
             if (dmg >= 15 && typeof unlockAchievement === 'function') unlockAchievement('overkill');
@@ -2241,6 +2356,10 @@ function playerAttack() {
 
                     if (currentLevelId === '5-Boss' && enemy.isBoss) {
                         unlockAchievement('world_1_5');
+                    }
+
+                    if (currentLevelId === 'W2-5-5' && enemy.isBoss) {
+                        unlockAchievement('world_2_5');
                     }
 
                     // --- NEW: Untouchable & EX Conqueror ---
@@ -2442,9 +2561,12 @@ function handleTurn(dx, dy) {
         if (currentLevelId === 'W2-3-1') gameProgress.w2l3s1 = true;
         if (currentLevelId === 'W2-3-2') gameProgress.w2l3s2 = true;
         if (currentLevelId === 'W2-3-3') gameProgress.w2l3s3 = true;
-        if (currentLevelId === 'W2-1-1') gameProgress.w2l4s1 = true;
-        if (currentLevelId === 'W2-1-2') gameProgress.w2l4s2 = true;
-        if (currentLevelId === 'W2-1-3') gameProgress.w2l4s3 = true;
+        if (currentLevelId === 'W2-4-1') gameProgress.w2l4s1 = true;
+        if (currentLevelId === 'W2-4-2') gameProgress.w2l4s2 = true;
+        if (currentLevelId === 'W2-4-3') gameProgress.w2l4s3 = true;
+        if (currentLevelId === 'W2-5-1') gameProgress.w2l5s1 = true;
+        if (currentLevelId === 'W2-5-2') gameProgress.w2l5s2 = true;
+        if (currentLevelId === 'W2-5-3') gameProgress.w2l5s3 = true;
 
         if (currentLevelId === 'W3-1-1') gameProgress.w3l1s1 = true;
         if (currentLevelId === 'W3-1-2') gameProgress.w3l1s2 = true;
@@ -2453,6 +2575,8 @@ function handleTurn(dx, dy) {
         if (currentLevelId === 'W2-1-4') gameProgress.w2l1Complete = true; 
         if (currentLevelId === 'W2-2-4') gameProgress.w2l2Complete = true;
         if (currentLevelId === 'W2-3-4') gameProgress.w2l3Complete = true;
+        if (currentLevelId === 'W2-4-4') gameProgress.w2l4Complete = true;
+        if (currentLevelId === 'W2-5-5') gameProgress.w2l5Complete = true;
 
         if (currentLevelId === '5-Boss') gameProgress.w1Complete = true; 
 
