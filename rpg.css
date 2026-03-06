@@ -16,6 +16,9 @@ h1, h2, h3 {
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg-dark);
+        background-image: url('images/background.png'); 
+    background-size: cover;
+    background-position: center;
 }
 
 body {
@@ -1235,7 +1238,9 @@ body {
     left: 0; 
     width: 100%; 
     height: 100%;
-    background-color: #1a1a1a; /* You can swap this for a background image url() later! */
+    background-image: url('images/background.png'); 
+    background-size: cover;
+    background-position: center;
     z-index: 9500;
     display: flex;
     flex-direction: row;
