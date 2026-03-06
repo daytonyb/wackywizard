@@ -114,16 +114,23 @@ body {
 
 .hazard::after { content: ""; color: #14532d; font-weight: bold; font-size: 20px; opacity: 1; z-index: 1; }
 
-.thicket { background-color: #14532d !important; color: #4ade80; z-index: 1; }
-.thicket::after { content: "♣"; opacity: 0.5; font-size: 20px; }
+.thicket { 
+    background-image: url('images/thicket.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.thicket::after { content: ""; opacity: 0.5; font-size: 20px; }
 
 .river {
-    background-color: #3b82f6 !important; 
-    color: #bfdbfe; 
-    z-index: 1;
-    animation: flow 1s infinite linear;
+    background-image: url('images/river.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: flow 2s infinite linear;
+    animation-direction: alternate
 }
-.river::after { content: "≈"; font-weight: bold; font-size: 24px; }
+.river::after { content: ""; font-weight: bold; font-size: 24px; }
 
 /* --- PHASE SPIKES (LEVEL 4) --- */
 .spike-safe {
@@ -216,15 +223,25 @@ body {
     border-radius: 0px; /* Square */
 }
 .enemy-mage {
-    background-color: #7c3aed !important; /* Violet */
-    border-radius: 50%;
-    border: 2px dotted #fff !important;
-    font-size: 22px;
+    background-image: url('images/mage.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* Items */
-.item-potion { background-color: #10b981 !important; color: white; border-radius: 50%; font-size: 20px; font-weight: bold; z-index: 1; box-shadow: 0 0 10px #10b981; }
-.item-weapon { background-color: #fbbf24 !important; color: black; border-radius: 5px; font-weight: bold; z-index: 1; border: 2px solid #fff !important; }
+.item-potion {
+    background-image: url('images/potion.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    }
+.item-weapon {
+    background-image: url('images/sword.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 .item-relic { background-color: #ec4899 !important; color: white; border-radius: 50%; border: 2px solid white !important; box-shadow: 0 0 15px #ec4899; z-index: 1; }
 
 /* UI Panel */
@@ -1210,3 +1227,64 @@ body {
     from { transform: translateY(0); }
     to { transform: translateY(-4px); }
 }
+
+/* --- MAIN MENU --- */
+#main-menu-screen {
+    position: fixed; 
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%;
+    background-color: #1a1a1a; /* You can swap this for a background image url() later! */
+    z-index: 9500;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 10%;
+}
+
+#menu-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+    width: 350px;
+}
+
+/* Retro buttons that scale up on hover */
+.menu-btn {
+    background: transparent;
+    border: none;
+    color: #eee;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px 0;
+    text-align: left;
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s;
+    text-shadow: 2px 2px #000;
+}
+
+.menu-btn:hover {
+    transform: scale(1.1) translateX(10px);
+    color: #fbbf24;
+}
+
+/* Save slot container styling */
+#profile-overlay {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 50px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 40px;
+    border-radius: 12px;
+    border: 2px solid #444;
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
