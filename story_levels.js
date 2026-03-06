@@ -11,7 +11,7 @@ const STORY_CAMPAIGN = {
         enemies: [
         ],
         portals: [ 
-            { pos: "E9", targetLevel: '0', targetPos: "E6", type: "door" } ,
+            { pos: "E9", targetLevel: 'O', targetPos: "E6", type: "door" } ,
             { pos: "A1", targetLevel: '1-1D', targetPos: "A1", type: "portal", label: "1"},
         ] 
     },
