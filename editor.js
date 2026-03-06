@@ -252,7 +252,7 @@ function exportLevel() {
     area.style.display = 'block';
     output.select();
     document.execCommand('copy');
-    alert("Level code copied! Go to the Game and click 'Load Custom Level'.");
+    alert("Level code copied! Open up your main save file and click the 'Load Custom Level' in the bottom right.");
 }
 
 initEditor();
