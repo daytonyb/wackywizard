@@ -3,17 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Wacky Wizard v1.0</title>
+    <title>The Wacky Wizard</title>
     <link rel="stylesheet" href="rpg.css">
 </head>
 <body>
 
     <h1>Coordinate RPG</h1>
 
-    <div id="profile-overlay" style="display:flex; flex-direction:column; position:fixed; top:0; left:0; width:100%; height:100%; background:#111; z-index:9000; align-items:center; justify-content:center;">
-    <h2 style="color:#fbbf24; margin-bottom:20px;">Select Save Profile</h2>
-    <div id="profile-list" style="display:flex; gap:20px;">
-        </div>
+<div id="main-menu-screen">
+    <div id="menu-sidebar">
+        <h1 style="font-size: 32px; margin-bottom: 40px; line-height: 1.5; color: #fbbf24;">The Wacky Wizard</h1>
+        <button class="menu-btn" onclick="showSaveSelect()">Start Game</button>
+        <button class="menu-btn" onclick="showCustomInfo()">Patch Notes</button>
+        <button class="menu-btn" onclick="showTutorialInfo()">How To Play</button>
+        <button class="menu-btn" onclick="showTipsInfo()">Helpful Tips</button>
+        <button class="menu-btn" onclick="launchGame()">New Window</button>
+        <button class="menu-btn" onclick="window.location.href='editor.html'">Level Editor</button>
+        <button class="menu-btn" onclick="startCredits()">Credits</button>
+    </div>
+    
+    <div id="profile-overlay" style="display:none;">
+        <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">Select Save File</h2>
+        <div id="profile-list" style="display:flex; gap:20px; flex-wrap: wrap;"></div>
+        <button class="menu-btn" style="margin-top: 40px; font-size: 12px;" onclick="hideSaveSelect()">< Back </button>
+    </div>
+
+    <div id="custom-info-overlay" style="display:none; flex-direction:column; align-items:flex-start; margin-left:50px; background:rgba(0,0,0,0.6); padding:40px; border-radius:12px; border:2px solid #444; animation:slideInRight 0.3s ease-out; max-width: 500px;">
+        <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">Patch Notes for Wacky Wizard v1.01.02</h2>
+        
+        <p style="color: #eee; line-height: 1.6; font-family: 'Inter', sans-serif; margin-bottom: 15px;">
+            - Added artwork for thickets, rivers, potions, swords, and mages. <br>
+            - Added main menu for better user experience. <br>
+            - Changed starting level layout to help new players. <br>
+            - Moved credits and custom levels to the main menu. <br>
+            - Added a new "How To Play" section with basic controls and tips. <br>
+            - XP bar now only appears in dungeon mode.
+        </p>
+
+        <button class="menu-btn" style="margin-top: 40px; font-size: 12px;" onclick="hideCustomInfo()">< Back</button>
+    </div>
+        <div id="tutorial-info-overlay" style="display:none; flex-direction:column; align-items:flex-start; margin-left:50px; background:rgba(0,0,0,0.6); padding:40px; border-radius:12px; border:2px solid #444; animation:slideInRight 0.3s ease-out; max-width: 500px;">
+        <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">How To Play</h2>
+
+        <p style="color: #eee; line-height: 1.6; font-family: 'Inter', sans-serif; margin-bottom: 15px;">
+            - Use arrow keys/WASD to move your character, click SPACE to attack orthogonally.<br>
+            - Watch out for enemy attacks and use the turn-based system to your advantage!<br>
+            - Defeat all enemies in a room, then use the door to continue!<br>
+        </p>
+
+        <button class="menu-btn" style="margin-top: 40px; font-size: 12px;" onclick="hideTutorialInfo()">< Back</button>
+    </div>
+
+            <div id="tips-info-overlay" style="display:none; flex-direction:column; align-items:flex-start; margin-left:50px; background:rgba(0,0,0,0.6); padding:40px; border-radius:12px; border:2px solid #444; animation:slideInRight 0.3s ease-out; max-width: 500px;">
+        <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">Helpful Tips</h2>
+
+        <p style="color: #eee; line-height: 1.6; font-family: 'Inter', sans-serif; margin-bottom: 15px;">
+            - Take your time to figure out the best move: This game has a turn based combat system.<br>
+            - When encountering new enemies, try to figure out how they work instead of rushing through them.<br>
+            - Experiment with strategies! Sometimes one thing that may work in a level won't work in another.<br>
+        </p>
+
+        <button class="menu-btn" style="margin-top: 40px; font-size: 12px;" onclick="hideTipsInfo()">< Back</button>
+    </div>
 </div>
 
     <div id="game-container">
@@ -34,12 +85,14 @@
                     <div id="player-hp-fill" class="hp-bar-fill"></div>
                 </div>
 
-                <p style="margin-top: 10px;">
-                    Level: <span id="player-level" style="color:#a855f7; font-weight:bold;">1</span> 
-                    <span class="level-badge" id="xp-text" style="float:right; font-size:10px;">0/100</span>
-                </p>
-                <div class="xp-bar-container">
-                    <div id="player-xp-fill" class="xp-bar-fill"></div>
+               <div id="xp-ui-section">
+                    <p style="margin-top: 10px;">
+                        Level: <span id="player-level" style="color:#a855f7; font-weight:bold;">1</span> 
+                        <span class="level-badge" id="xp-text" style="float:right; font-size:10px;">0/100</span>
+                    </p>
+                    <div class="xp-bar-container">
+                        <div id="player-xp-fill" class="xp-bar-fill"></div>
+                    </div>
                 </div>
 
                 <div id="ability-bar" style="margin-top:10px; display:flex; gap:5px; flex-wrap:wrap; font-size:10px;">
@@ -145,5 +198,4 @@
 <script src="rpg.js"></script>
     
 </body>
-
 </html>
