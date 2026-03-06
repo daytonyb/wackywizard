@@ -15,15 +15,23 @@ const LEVELS = {
     // --- NEW STARTING MENU ---
     '0': {
         name: "The Beginning",
-        walls: [],
+        walls: ["A2","B2","B1","H1","I2","H2","B8","H8","H9","I8","I9","A8","A9","B9"],
         portals: [
             { pos: "A1", targetLevel: 'World-Select', targetPos: "E6", type: "portal", label: "W" },
-            { pos: "C1", targetLevel: 'Endless-Start', targetPos: "E9", type: "portal", label: "∞" },
-            { pos: "I1", type: "portal", redirect: "editor.html", label: "E" },
-            { pos: "I5", type: "door", redirect: "launcher.html", label: "L" },
+            { pos: "I1", type: "portal", targetLevel: "O", targetPos: "E6", label: "O" },
             { pos: "E1", targetLevel: 'Tutorial-1', targetPos: "E2", type: "portal", label: "?" },
-            { pos: "G1", targetLevel: '0D', targetPos: "E6", type: "portal", label: "D" },
-            { pos: "E9", targetLevel: 'Credits', targetPos: "E5", type: "portal", label: "C"}
+            { pos: "E9", redirect: "index.html", type: "door" } ,
+        ],
+        enemies: [], items: []
+    },
+
+        'O': {
+        name: "Other Game Modes",
+        walls: [],
+        portals: [
+            { pos: "A1", targetLevel: 'Endless-Start', targetPos: "E9", type: "portal", label: "∞" },
+            { pos: "I1", targetLevel: '0D', targetPos: "E6", type: "portal", label: "D" },
+            { pos: "E9", type: "door", targetLevel: '0', targetPos: "E6"},
         ],
         enemies: [], items: []
     },
@@ -36,19 +44,22 @@ const LEVELS = {
         enemies: [
         ],
         text: [
-            "Code and Artwork by Dayton B.",
+            "Code by Dayton B.",
             "Music by Kameron M.",
-            "Other Notable People include Asher V., Andrew R. and Tasin G.",
+            "Art by Dayton B. and Asher V.",
+            "Other Notable People include Andrew R., Tasin G., Ryan S., and Abhi T.",
             "All levels in this world were designed by the people in these credits!",
             "Special thanks to all these people!"
         ],
         portals: [ 
-            { pos: "E9", targetLevel: '0', targetPos: "E6", type: "door" } ,
+            { pos: "E9", redirect: "index.html", type: "door" } ,
             { pos: "A1", targetLevel: 'DB-Select', targetPos: "E6", type: "portal", label: "DB" } ,
             { pos: "C1", targetLevel: 'KM-Select', targetPos: "E6", type: "portal", label: "KM" } ,
             { pos: "E1", targetLevel: 'AV-Select', targetPos: "E6", type: "portal", label: "AV" } ,
             { pos: "G1", targetLevel: 'AR-Select', targetPos: "E6", type: "portal", label: "AR" } ,
             { pos: "I1", targetLevel: 'TG-Select', targetPos: "E6", type: "portal", label: "TG" } ,
+            { pos: "I3", targetLevel: 'RS-Select', targetPos: "E6", type: "portal", label: "RS" } ,
+            { pos: "I5", targetLevel: 'AT-Select', targetPos: "E6", type: "portal", label: "AT" } ,
             
         ] ,
         items: []
@@ -94,9 +105,25 @@ const LEVELS = {
         ],
         enemies: [], items: []
     },
+            'RS-Select':{
+        name: "Ryan's Levels",
+        walls: [],
+        portals: [
+            { pos: "E9", type: "door", targetLevel: 'Credits', targetPos: "E5" },
+        ],
+        enemies: [], items: []
+    },
+            'AT-Select':{
+        name: "Abhi's Levels",
+        walls: [],
+        portals: [
+            { pos: "E9", type: "door", targetLevel: 'Credits', targetPos: "E5" },
+        ],
+        enemies: [], items: []
+    },
 
     'World-Select':{
-        name: "000 - World Selection",
+        name: "World Selection",
         walls: ["H6","H7","H8","H9","I6","I7","I8"],
         portals: [
             { pos: "A1", targetLevel: 'Level-Select', targetPos: "E6", type: "portal", label: "W1" },
@@ -166,8 +193,7 @@ const LEVELS = {
         text: [
             "Now for a final test of knowledge!",
             "After finishing this, feel free to check out our several levels!",
-            "Go into the W portal to explore the 3 different worlds in the game, or check out our different modes by using the different portals on the main menu.",
-            "Our game modes include Endless Mode, a Dungeon Mode, a Story Mode, and a Level Maker!"
+            "Go into the W portal to explore the 3 different worlds in the game, or check out our different modes by using the O portal in the main menu!",
         ],
 },
 
@@ -341,7 +367,6 @@ const LEVELS = {
             { pos: "G1", targetLevel: 'W2-4', targetPos: "E6", type: "portal", label: "4" },
             { pos: "I1", targetLevel: 'W2-5', targetPos: "E6", type: "portal", label: "5" },
             { pos: "I5", targetLevel: 'World-Select', targetPos: "E6", type: "door" },
-            { pos: "A5", type: "inventory", label: "📦" },
         ],
         enemies: [], items: []
     },
@@ -783,12 +808,6 @@ if (typeof STORY_CAMPAIGN !== 'undefined') {
     Object.assign(LEVELS, STORY_CAMPAIGN);
 }
 
-// --------------------------------
-
-// ---------------------------------------------------------
-// REPLACE ALL GLOBAL VARIABLES WITH THIS BLOCK
-// ---------------------------------------------------------
-
 let currentLevelId = '0'; 
 let currentSaveSlot = 'rpgSave_1'; 
 let player = { 
@@ -824,6 +843,9 @@ let endlessBiome = "biome-sewer";
 let dialogueQueue = []; 
 let isDialogueOpen = false;
 let bouldersDestroyed = 0;
+
+let checkpointLevelId = '0'; 
+let checkpointCoord = 'E6';
 
 function parseCoord(coordString) {
     const colChar = coordString.charAt(0).toUpperCase();
@@ -873,6 +895,9 @@ function saveGame() {
         endlessDepth: endlessDepth,
         endlessBiome: endlessBiome,
         generatedLevel: LEVELS['Endless'],
+
+        checkpointLevelId: checkpointLevelId, // NEW
+        checkpointCoord: checkpointCoord,     // NEW
         
         // --- NEW: Save Achievement Data to this specific slot ---
         achievements: unlockedAchievements, 
@@ -925,6 +950,10 @@ function loadGame() {
             LEVELS['Endless'] = state.generatedLevel;
         }
 
+        // NEW: Load Checkpoint Data
+        checkpointLevelId = state.checkpointLevelId || '0';
+        checkpointCoord = state.checkpointCoord || 'E6';
+
         // --- NEW: Load Achievement Data for this slot ---
         unlockedAchievements = state.achievements || [];
         // Convert Array back to Set
@@ -951,22 +980,31 @@ function resetGame() {
 }
 
 function respawn() {
+    // 1. Fully heal the player
     player.hp = player.maxHp;
-    currentLevelId = '0';
     player.x = 4; player.y = 5; 
     playerActionsLeft = 2;
     enemies = []; items = []; boulders = []; tempWalls = []; crystals = [];
 
-    resetRPGStats(); // Wipe XP and Skills on death
-
-    // Reset mechanics
+    resetRPGStats(); 
+    // 2. Reset turn mechanics
+    playerActionsLeft = 2;
+    enemies = []; items = []; boulders = []; tempWalls = []; crystals = [];
     voidRadius = 0; turnCounter = 0; player.energySapped = false;
     conveyorDir = 1; bossRotation = 0;
     
-    // Reset endless
+    // 3. Reset endless depth
     endlessDepth = 0;
 
-    saveGame(); location.reload();
+    // 4. Teleport the player to their last safe checkpoint!
+    currentLevelId = checkpointLevelId || '0';
+    const start = parseCoord(checkpointCoord || 'E6');
+    player.x = start.x; 
+    player.y = start.y;
+
+    // 5. Save the game at the checkpoint and reload the screen
+    saveGame(); 
+    location.reload();
 }
 
 function applyGlobalUnlocks() {
@@ -987,20 +1025,6 @@ function applyGlobalUnlocks() {
         if(LEVELS['Level-Select'].walls.includes("I2")) LEVELS['Level-Select'].walls.splice(LEVELS['Level-Select'].walls.indexOf("I2"), 1);
         if(!LEVELS['Level-Select'].portals.some(p => p.targetLevel === 'EX-4-1')) LEVELS['Level-Select'].portals.push({ pos: "G9", targetLevel: 'EX-4-1', targetPos: "A1", type: "portal", label: "EX4" });
     }
-    if (gameProgress.level5Complete) {
-        // This adds the "W2" portal specifically to Level '0'
-        const startMenu = LEVELS['0'];
-        if (startMenu && !startMenu.portals.some(p => p.label === "W2")) {
-            startMenu.portals.push({ 
-                pos: "C1", 
-                targetLevel: 'World-2-Select', 
-                targetPos: "E6", 
-                type: "portal", 
-                label: "W2" 
-            });
-            log("A new path has opened in the Beginning!");
-        }
-    }
 
     if (gameProgress.w1Complete) {
         const hub = LEVELS['World-Select'];
@@ -1013,6 +1037,36 @@ function applyGlobalUnlocks() {
     }
 
     // World 2 Unlocks
+    if (gameProgress.tutorialComplete) {
+        const hub = LEVELS['0'];
+        const wIndex = hub.walls.indexOf("A2");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+            log("Main Modes unlocked!");
+        }
+    }
+        if (gameProgress.tutorialComplete) {
+        const hub = LEVELS['0'];
+        const wIndex = hub.walls.indexOf("I2");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+        }
+    }
+        if (gameProgress.tutorialComplete) {
+        const hub = LEVELS['0'];
+        const wIndex = hub.walls.indexOf("H1");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+        }
+    }
+        if (gameProgress.tutorialComplete) {
+        const hub = LEVELS['0'];
+        const wIndex = hub.walls.indexOf("B1");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+        }
+    }
+
     if (gameProgress.w2l1Complete) {
         const hub = LEVELS['World-2-Select'];
         // Remove Wall at C2 to open path to Level 2
@@ -1141,7 +1195,7 @@ function initGame() {
         uiPanel.appendChild(resetBtn);
     }
 
-let loadBtn = document.getElementById('load-btn');
+    let loadBtn = document.getElementById('load-btn');
     if (!loadBtn) {
         loadBtn = document.createElement('button');
         loadBtn.id = 'load-btn';
@@ -1513,7 +1567,7 @@ function loadLevel(levelId, startCoord) {
         startDialogue([
             "Welcome, Wizard! It seems you are a new player!",
             "Your powers are weak, and the dungeon is dangerous.",
-            "Please press W or the up arrow to step into the '?' portal.",
+            "Please enter the '?' portal to continue.",
             "Good luck on your adventure!"
         ], "Old Man");
         gameProgress.introSeen = true;
@@ -1524,7 +1578,7 @@ function loadLevel(levelId, startCoord) {
         startDialogue([
             "Welcome, Wizard! Here you can select different worlds to explore!",
             "Your powers are weak, so W1 would be the best place to start...",
-            "The W2 and W3 portals can still be explored later in the game!",
+            "The W2 and W3 portals are harder levels that will be difficult for a first time player.",
             "Good luck on your adventure!"
         ], "Old Man");
         gameProgress.WorldSelectSeen = true;
@@ -1533,10 +1587,10 @@ function loadLevel(levelId, startCoord) {
 
     if (levelId === '0D' && !gameProgress.DungeonSeen) {
         startDialogue([
-            "Welcome Hero, and welcome to my super secret fun place of doom!",
+            "Welcome to the Dungeon, brave Wizard!",
             "Here you can unlock new abilities that can't be used in any other levels.",
-            "Despite however well you did in the main game, these levels will still be a challenge.",
-            "Good luck on your journey and have fun adventuring!"
+            "You can press M to open the map to see where you are in the dungeon.",
+            "You must clear all rooms in the dungeon to move on. Good luck!"
         ], "Dungeon Master");
         gameProgress.DungeonSeen = true;
         saveGame(); 
@@ -1546,7 +1600,13 @@ function loadLevel(levelId, startCoord) {
     
     // Sync HP for damage tracking
     previousHp = player.hp; 
-    
+
+    const aliveEnemies = enemies.filter(e => e.alive).length;
+    if (aliveEnemies === 0 && levelId !== 'Endless' && levelId !== 'Custom') {
+        checkpointLevelId = levelId;
+        checkpointCoord = startCoord;
+    }
+
     drawGrid(); updateStats(); saveGame(); 
 }
 
@@ -1707,7 +1767,7 @@ function drawGrid() {
                      if (enemyHere.hp <= enemyHere.maxHp / 2) cell.classList.add('boss-enraged');
                 } else {
                      if(enemyHere.type === 'ranged') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-ranged'); }
-                     else if(enemyHere.type === 'mage') { eIcon.textContent = 'M'; cell.classList.add('enemy', 'enemy-mage'); }
+                     else if(enemyHere.type === 'mage') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-mage'); }
                      else if(enemyHere.type === 'fast') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-fast'); }
                      else if(enemyHere.type === 'bat') { eIcon.textContent = 'W'; cell.classList.add('enemy', 'enemy-bat'); }
                      else if(enemyHere.type === 'golem') { eIcon.textContent = 'G'; cell.classList.add('enemy', 'enemy-golem'); }
@@ -1734,9 +1794,9 @@ function drawGrid() {
                 }
             } else if (itemHere) {
                 const iIcon = document.createElement('span');
-                if (itemHere.type === 'weapon') { iIcon.textContent = '⚔️'; cell.classList.add('item-weapon'); } 
+                if (itemHere.type === 'weapon') { iIcon.textContent = ''; cell.classList.add('item-weapon'); } 
                 else if (itemHere.type === 'relic' || itemHere.type === 'heart_container') { iIcon.textContent = '🧿'; cell.classList.add('item-relic'); } 
-                else { iIcon.textContent = '+'; cell.classList.add('item-potion'); }
+                else { iIcon.textContent = ''; cell.classList.add('item-potion'); }
                 cell.appendChild(iIcon);
             
             } else if (crystalHere) {
@@ -1891,7 +1951,17 @@ function updateStats() {
         endGame(false);
     }
 
-    // --- 4. PLAYER XP & LEVEL ---
+// --- 4. PLAYER XP & LEVEL ---
+    const xpUiSection = document.getElementById('xp-ui-section');
+    if (xpUiSection) {
+        // Only show the XP UI if the current level is a dungeon level (ends in 'D')
+        if (currentLevelId && currentLevelId.endsWith('D')) {
+            xpUiSection.style.display = 'block';
+        } else {
+            xpUiSection.style.display = 'none';
+        }
+    }
+
     const lvlEl = document.getElementById('player-level');
     if (lvlEl) lvlEl.textContent = player.level;
 
@@ -2102,7 +2172,8 @@ if (e.key === 'm' || e.key === 'M') {
         gameProgress.level5Complete = true;
         applyGlobalUnlocks();
 
-        // --- NEW: Unlock World 2 Boss ---
+        gameProgress.tutorialComplete = true;
+
         gameProgress.w2l1s1 = true;
         gameProgress.w2l1s2 = true;
         gameProgress.w2l1s3 = true;
@@ -2552,6 +2623,8 @@ function handleTurn(dx, dy) {
     if (targetPortal && targetPortal.type === 'inventory') { openInventory(); return; }
     if (targetPortal && targetPortal.redirect) { window.location.href = targetPortal.redirect; return; }
     if (targetPortal) {
+        if (currentLevelId === 'Tutorial-Boss') gameProgress.tutorialComplete = true; 
+
         if (currentLevelId === 'W2-1-1') gameProgress.w2l1s1 = true;
         if (currentLevelId === 'W2-1-2') gameProgress.w2l1s2 = true;
         if (currentLevelId === 'W2-1-3') gameProgress.w2l1s3 = true;
@@ -4255,48 +4328,6 @@ function toggleMap() {
     }
 }
 
-function initProfileMenu() {
-    const list = document.getElementById('profile-list');
-    list.innerHTML = ''; // Clear list
-
-    // Create 3 Save Slots
-    for (let i = 1; i <= 3; i++) {
-        const slotKey = `rpgSave_${i}`;
-        const savedData = localStorage.getItem(slotKey);
-        
-        const card = document.createElement('div');
-        card.className = 'profile-card';
-        
-        let content = `<h4>Slot ${i}</h4>`;
-        
-        if (savedData) {
-            try {
-                const data = JSON.parse(savedData);
-                const lvl = data.player ? data.player.level : 1;
-                const mapName = LEVELS[data.currentLevelId] ? LEVELS[data.currentLevelId].name : "Unknown";
-                content += `<div class="profile-info">Level ${lvl}<br>${mapName}</div>`;
-            } catch(e) {
-                content += `<div class="profile-empty">Corrupted</div>`;
-            }
-        } else {
-            content += `<div class="profile-empty">Empty<br>(New Game)</div>`;
-        }
-
-        card.innerHTML = content;
-        
-        card.onclick = () => {
-            currentSaveSlot = slotKey;
-            if (typeof playNextTrack === "function") {
-                playNextTrack(); 
-            }
-            document.getElementById('profile-overlay').style.display = 'none';
-            initGame(); // START THE GAME
-        };
-
-        list.appendChild(card);
-    }
-}
-
 function showAchievements() {
     const overlay = document.getElementById('achievements-overlay');
     const list = document.getElementById('achievements-list');
@@ -4374,5 +4405,117 @@ bgmPlayer.addEventListener('ended', function() {
     playNextTrack(); // When song ends, play the next one!
 });
 
+// --- MENU TOGGLE LOGIC ---
+
+function showSaveSelect() {
+    document.getElementById('custom-info-overlay').style.display = 'none'; // Hide info box
+    document.getElementById('tutorial-info-overlay').style.display = 'none';
+    document.getElementById('profile-overlay').style.display = 'flex';     // Show save box
+    document.getElementById('tips-info-overlay').style.display = 'none';
+}
+
+function hideSaveSelect() {
+    document.getElementById('profile-overlay').style.display = 'none';
+}
+
+function showCustomInfo() {
+    document.getElementById('profile-overlay').style.display = 'none';     // Hide save box
+    document.getElementById('tutorial-info-overlay').style.display = 'none';
+    document.getElementById('custom-info-overlay').style.display = 'flex'; // Show info box
+    document.getElementById('tips-info-overlay').style.display = 'none';
+}
+
+function hideCustomInfo() {
+    document.getElementById('custom-info-overlay').style.display = 'none';
+}
+
+function showTutorialInfo() {
+    document.getElementById('profile-overlay').style.display = 'none';     // Hide save box
+    document.getElementById('tutorial-info-overlay').style.display = 'flex'; // Show info box
+    document.getElementById('custom-info-overlay').style.display = 'none';
+    document.getElementById('tips-info-overlay').style.display = 'none';
+}
+
+function hideTutorialInfo() {
+    document.getElementById('tutorial-info-overlay').style.display = 'none';
+}
+
+function showTipsInfo() {
+    document.getElementById('profile-overlay').style.display = 'none';     // Hide save box
+    document.getElementById('tips-info-overlay').style.display = 'flex'; // Show info box
+    document.getElementById('custom-info-overlay').style.display = 'none';
+    document.getElementById('tutorial-info-overlay').style.display = 'none';
+}
+
+function hideTipsInfo() {
+    document.getElementById('tips-info-overlay').style.display = 'none';
+}
+
+function initProfileMenu() {
+    const list = document.getElementById('profile-list');
+    list.innerHTML = ''; // Clear list
+
+    // Create 3 Save Slots
+    for (let i = 1; i <= 3; i++) {
+        const slotKey = `rpgSave_${i}`;
+        const savedData = localStorage.getItem(slotKey);
+        
+        const card = document.createElement('div');
+        card.className = 'profile-card';
+        
+        let content = `<h4>Slot ${i}</h4>`;
+        
+        if (savedData) {
+            try {
+                const data = JSON.parse(savedData);
+                const lvl = data.player ? data.player.level : 1;
+                const mapName = LEVELS[data.currentLevelId] ? LEVELS[data.currentLevelId].name : "Unknown";
+                content += `<div class="profile-info">Level ${lvl}<br>${mapName}</div>`;
+            } catch(e) {
+                content += `<div class="profile-empty">Corrupted</div>`;
+            }
+        } else {
+            content += `<div class="profile-empty">Empty<br>(New Game)</div>`;
+        }
+
+        card.innerHTML = content;
+        
+        card.onclick = () => {
+            currentSaveSlot = slotKey;
+            if (typeof playNextTrack === "function") {
+                playNextTrack(); 
+            }
+            // Hide the entire main menu screen so the game can start
+            document.getElementById('main-menu-screen').style.display = 'none';
+            initGame(); // START THE GAME
+        };
+
+        list.appendChild(card);
+    }
+}
+
+function startCredits() {
+    // Hide the main menu
+    document.getElementById('main-menu-screen').style.display = 'none';
+    
+    // Default to slot 1 so the game has a place to store temporary progress
+    // while they walk around the credits room
+    currentSaveSlot = 'rpgSave_1'; 
+    
+    // Start the music if you want it playing during the credits!
+    if (typeof playNextTrack === "function") {
+        playNextTrack(); 
+    }
+
+    // Build the game UI
+    initGame(); 
+    
+    // Instantly teleport the player into the middle (E5) of the Credits level
+    loadLevel('Credits', 'E5'); 
+}
+
+        function launchGame() {
+            window.open('index.html', 'TheWackyWizard', 'width=1000,height=850,menubar=no,toolbar=no,location=no,status=no,resizable=yes');
+        }
 // Don't start game immediately. Show menu first.
 initProfileMenu();
