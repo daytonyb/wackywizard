@@ -56,7 +56,10 @@ const ACHIEVEMENTS = {
     'combo_master': { name: "Combo Master", desc: "Hit 3+ enemies with one Cleave.", icon: "🌪️" },
     'self_sabotage': { name: "Self-Sabotage", desc: "Get hit by your own Bomb.", icon: "💣" },
     'curiosity': { name: "Curiosity", desc: "Die by falling into the Void.", icon: "🐈" },
-    'hoarder': { name: "Hoarder", desc: "Finish a level leaving a Potion behind.", icon: "🎒" }
+    'hoarder': { name: "Hoarder", desc: "Finish a level leaving a Potion behind.", icon: "🎒" },
+    'ghostly_step': { name: "Ghostly Step", desc: "Phase directly through a wall or boulder.", icon: "👻" },
+    'watch_your_step': { name: "Watch Your Step", desc: "Survive falling through a crumbling floor.", icon: "🕳️" },
+    'fatal_attraction': { name: "Fatal Attraction", desc: "Get pulled by a Sentinel and take damage in the same turn.", icon: "🧲" }
 };
 
 let unlockedAchievements = [];
@@ -91,7 +94,7 @@ function showAchievementToast(id) {
         </div>
     `;
 
-    document.body.appendChild(toast);
+        document.getElementById('master-wrapper').appendChild(toast);
 
     setTimeout(() => toast.classList.add('show'), 100);
     setTimeout(() => {
