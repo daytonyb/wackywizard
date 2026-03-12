@@ -1202,8 +1202,8 @@ const STORY_CAMPAIGN = {
         text: [
             "Congratulations, hero!",
             "You have cleared the second floor!",
-            "Unfortunately, the third floor has not yet been added.",
-            "Level layouts have already been planned, and they should be coming soon!",
+            "Congratulations on beating the second dungeon!",
+            "Unfortunately, this is the last dungeon in the game, but feel free to explore the rest of this game!",
         ],
         portals: [
             { pos: "E1", targetLevel: '0D', targetPos: "E6", type: "door", label: "D" },
