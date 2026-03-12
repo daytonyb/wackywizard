@@ -32,6 +32,147 @@ const LEVELS = {
             { pos: "A1", targetLevel: 'Endless-Start', targetPos: "E9", type: "portal", label: "∞" },
             { pos: "I1", targetLevel: '0D', targetPos: "E6", type: "portal", label: "D" },
             { pos: "E9", type: "door", targetLevel: '0', targetPos: "E6"},
+            { pos: "E1", targetLevel: 'Weapon-Select', targetPos: "E9", type: "portal", label: "W" },
+        ],
+        enemies: [], items: []
+    },
+            'Weapon-Select': {
+        name: "Different Weapon Types",
+        walls: ["B2","C2","D2","E2","F2","G2","H2","I2"],
+        portals: [
+            { pos: "A1", targetLevel: 'Bows', targetPos: "E6", type: "portal", label: "B" },
+            { pos: "I1", targetLevel: 'Fireworks', targetPos: "E6", type: "portal", label: "F" },
+            { pos: "E9", type: "door", targetLevel: 'O', targetPos: "E6"},
+            { pos: "E1", targetLevel: 'Crossbows', targetPos: "E6", type: "portal", label: "C" },
+            { pos: "C1", targetLevel: 'Daggers', targetPos: "E6", type: "portal", label: "S" },
+            { pos: "G1", targetLevel: 'One_Punch', targetPos: "E6", type: "portal", label: "OP" },
+        ],
+        enemies: [], items: []
+    },        
+    'Bows':{
+        name: "The Bow",
+        walls: ["B2","C2","D2","E2","F2","G2","H2","I2"],
+        portals: [
+            { pos: "A1", targetLevel: 'Bow11', targetPos: "A1", type: "portal", label: "B1"},
+            { pos: "C1", targetLevel: 'Bow21', targetPos: "A1", type: "portal", label: "B2"},
+            { pos: "E9", type: "door", targetLevel: 'Weapon-Select', targetPos: "E6" },
+        ],
+        enemies: [], items: []
+    },
+        'Bow11':{
+        name: "Bow Level 1",
+        walls: ["H1","H2","I2","A8","B8","B9"],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bow12', targetPos: "A1" },
+        ],
+        enemies: [
+            { pos: "I1"}, {pos: "A9"}
+        ], items: []
+    },
+            'Bow12':{
+        name: "Bow Level 2",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bow13', targetPos: "A1" },
+        ],
+        enemies: [
+            { pos: "I1"}, {pos: "A9"}, {pos: "E5"}
+        ], items: []
+    },
+            'Bow13':{
+        name: "Bow Level 3",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bow1B', targetPos: "A1" },
+        ],
+        enemies: [
+            { pos: "I1"}, {pos: "A9"}, {pos: "E5"}, {pos: "C3"}, {pos: "G7"}
+        ], items: []
+    },
+                'Bow1B':{
+        name: "Bow Boss Fight",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bows', targetPos: "E6" },
+        ],
+        enemies: [
+            {pos: "E5", isBoss: true, hp: 50}
+        ], items: []
+    },
+        'Bow21':{
+        name: "Bow Level 1",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bow22', targetPos: "A1" },
+        ],
+        enemies: [
+            {pos: "E5", type: "fast"},{pos: "F6", type: "fast"}, {pos: "D4"}
+        ], items: [],
+        hazards: ["B8","H2"]
+    },
+            'Bow22':{
+        name: "Bow Level 2",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bow23', targetPos: "A1" },
+        ],
+        enemies: [
+            { pos: "E5", type: "golem"}, {pos: "A9"}, {pos: "I1"}
+        ], items: [
+            {pos: "G7", type: "potion", value: 5}
+        ]
+    },
+            'Bow23':{
+        name: "Bow Level 3",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bow2B', targetPos: "A1" },
+        ],
+        enemies: [
+            { pos: "I1"}, {pos: "A9"}, {pos: "E5", type: "golem"}, {pos: "C3", type: "mage"}, {pos: "G7", type: "fast"}
+        ], items: [
+            {pos: "C3", type: "sword", value: 2, name: "Rusty Sword"}
+        ]
+    },
+                'Bow2B':{
+        name: "Bow Boss Fight",
+        walls: [],
+        portals: [
+            { pos: "I9", type: "door", targetLevel: 'Bows', targetPos: "E6" },
+        ],
+        enemies: [
+            {pos: "E5", isBoss: true, hp: 50}
+        ], items: []
+    },
+        'Daggers':{
+        name: "The Dagger",
+        walls: [],
+        portals: [
+            { pos: "E9", type: "door", targetLevel: 'Weapons', targetPos: "E6" },
+        ],
+        enemies: [], items: []
+    },
+        'Crossbows':{
+        name: "The Crossbow",
+        walls: [],
+        portals: [
+            { pos: "E9", type: "door", targetLevel: 'Weapons', targetPos: "E6" },
+        ],
+        enemies: [], items: []
+    },
+        'One_Punch':{
+        name: "One Punch Man",
+        walls: [],
+        portals: [
+            { pos: "E9", type: "door", targetLevel: 'Weapons', targetPos: "E6" },
+        ],
+        enemies: [], items: []
+    },
+        'Fireworks':{
+        name: "The Firework",
+        walls: [],
+        portals: [
+            { pos: "E9", type: "door", targetLevel: 'Weapons', targetPos: "E6" },
         ],
         enemies: [], items: []
     },
@@ -39,7 +180,7 @@ const LEVELS = {
     'Credits': { 
         name: "Credits", 
         speaker: "Credits",
-        walls: [], 
+        walls: ["A2","B2","C2","D2","F2","H2","H3","H4","H5","H6","I6"], 
         hazards: [],
         enemies: [
         ],
@@ -52,7 +193,7 @@ const LEVELS = {
             "Special thanks to all these people!"
         ],
         portals: [ 
-            { pos: "E9", redirect: "index.html", type: "door" } ,
+            { pos: "E9", targetLevel: '0',targetPos: "E6", type: "door" } ,
             { pos: "A1", targetLevel: 'DB-Select', targetPos: "E6", type: "portal", label: "DB" } ,
             { pos: "C1", targetLevel: 'KM-Select', targetPos: "E6", type: "portal", label: "KM" } ,
             { pos: "E1", targetLevel: 'AV-Select', targetPos: "E6", type: "portal", label: "AV" } ,
@@ -86,16 +227,42 @@ const LEVELS = {
         walls: [],
         portals: [
             { pos: "E9", type: "door", targetLevel: 'Credits', targetPos: "E5" },
+            { pos: "A1", type: "portal", targetLevel: 'Castle-Break-In', targetPos: "A1", label: ":(" } ,
         ],
         enemies: [], items: []
     },
+        'Castle-Break-In':{
+            name: "Castle Break-In",
+            walls: ["D1","E1","F1","G1","H1","I1","C2","D2","E2","F2","G2","H2","I2","B3","C3","H3","I3","A4","B4","I4","A5","B5","I5","A6","B6","I6","A7","B7","I7","A8","B8","C8","A9","B9","C9","D9","E9","F9","G9"],
+            portals: [  
+            { pos: "I9", type: "door", targetLevel: 'AV-Select', targetPos: "E6" },
+            ],
+            enemies: [
+                {pos: "E5"},{pos: "F5"},{pos: "E6"},{pos: "F6"},{pos: "H6", type: "guard"},{pos: "G7", type: "guard"},{pos: "F8", type: "guard"},{pos: "H7", type: "mage"},{pos: "G8", type: "mage"},{pos: "I8", type: "golem"},{pos: "H9", type: "golem"},
+            ],
+            items: [],boulders: ["H8"],crystals: ["C1"]
+        },
         'AR-Select':{
         name: "Andrew's Levels",
         walls: [],
         portals: [
             { pos: "E9", type: "door", targetLevel: 'Credits', targetPos: "E5" },
+            { pos: "A1", type: "portal", targetLevel: 'Bloodbath', targetPos: "I9", label: "(())" } ,
         ],
         enemies: [], items: []
+    },
+            'Bloodbath':{
+        name: "Bloodbath",
+        walls: ["D1","D2"],
+        portals: [{ pos: "A1", type: "door", targetLevel: 'AR-Select', targetPos: "E6" },],
+        enemies: [
+            {pos: "E1", type: "guard"},{pos: "I1", type: "golem"},{pos: "F2", type: "sentinel"},{pos: "E3", type: "guard"},{pos: "G3", type: "ranged"},{pos: "A4", type: "fast"},{pos: "C6", type: "welder"},{pos: "D6", type: "mage"},{pos: "F6", type: "wraith"},{pos: "A8", type: "ranged"},
+        ], items: [{pos: "A9", type: "weapon", value: 2, name: "Rusty Sword"},],
+            hazards: ["B1","C1","A2","B2","C2","A3","B3","C3","E2","C4","A6","E6","C8"],
+        thickets: ["H2","D3","B4","B5","D5","F5","G6","H6","B7","D7","F7","H7","E8","G8","B9","D9"],
+        spikes: ["B6","G7"],
+        ice: ["D4","F4","G4","E4","C5","E5","G5"],
+        rivers: ["H3","H4","H5"]
     },
         'TG-Select':{
         name: "Tasin's Levels",
@@ -212,24 +379,32 @@ const LEVELS = {
         ], walls: [], portals: [ { pos: "E9", targetLevel: 'Level-Select', targetPos: "E6", type: "door" } ], enemies: [{pos: "E5", isBoss: true}] },
 
     // --- LEVEL 2: FOREST ---
-    '2-1': { name: "Forest - Overgrowth",speaker: "Bushman", text: [
+    '2-1': { name: "Forest - Overgrowth",speaker: "Vine Swinger", text: [
             "Welcome to the second level!","Here you can find bushes that can slow you down...","Either avoid them, or use them if you want to."
         ], walls: ["B2", "B3", "B4", "H6", "H7", "H8"], thickets: ["C2", "C3", "C4", "D2", "D3", "G6", "G7", "F6", "F7"], portals: [{pos: "I9", targetLevel: '2-2', targetPos: "A1", type: "door"}], enemies: [{pos: "D5"}, {pos: "G2"}, {pos: "B8"}] },
-    '2-2': { name: "Forest - Rapids", speaker: "Bushman", text: [
+    '2-2': { name: "Forest - Rapids", speaker: "Vine Swinger", text: [
             "Here you can find rivers that sweep you downstream!","If they sweep you into an object, you can take damage...","Be careful and defeat the enemies!"
         ],walls: ["A5", "B5", "H5", "I5"], rivers: ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9"], thickets: ["D2", "D8", "F2", "F8"], portals: [{pos: "I9", targetLevel: '2-3', targetPos: "A1", type: "door"}], enemies: [{pos: "C5"}, {pos: "G5"}, {pos: "F1"}] },
-    '2-3': { name: "Forest - Spider Nest", speaker: "Bushman", text: [
+    '2-3': { name: "Forest - Spider Nest", speaker: "Vine Swinger", text: [
             "Wow! A new type of enemy!","This is the first enemy with a ranged attack!","Watch out and fight strategically!"
         ],walls: ["C3", "C7", "G3", "G7", "E5"], portals: [{pos: "I9", targetLevel: '2-Boss', targetPos: "E1", type: "door"}], enemies: [ {pos: "C5", type: "ranged"}, {pos: "G5", type: "ranged"}, {pos: "E3", type: "ranged"} ], items: [ {pos: "A9", type: "potion", value: 5}, {pos: "E9", type: "weapon", value: 2, name: "Rusty Sword"} ] },
-    '2-Boss': { name: "Forest - BROODMOTHER", speaker: "Bushman", text: [
-            "This is another type of boss!","This boss will spawn enemies that you have to defeat.",
-        ],walls: ["A1", "A9", "I1", "I9"], thickets: ["C3", "C7", "G3", "G7"], portals: [{pos: "E9", targetLevel: 'Level-Select', targetPos: "E6", type: "door"}], enemies: [{pos: "E5", isBoss: true, type: "summoner"}] },
+    '2-Boss': { name: "Forest - BROODMOTHER", speaker: "Vine Swinger", text: [
+            "This is a special type of boss!","This boss will spawn enemies that you have to defeat.",
+        ],walls: ["A1", "A9", "I1", "I9"], thickets: ["C3", "C7", "G3", "G7"], portals: [{pos: "E9", targetLevel: 'Level-Select', targetPos: "E6", type: "door"}], enemies: [{pos: "E5", isBoss: true, type: "summoner", skin: "broodmother"}] },
 
     // --- LEVEL 3: MINES ---
-    '3-1': { name: "Mines - Collapse", walls: ["B2", "B8", "H2", "H8"], boulders: ["C5", "D5", "E5", "F5", "G5", "E3", "E7"], portals: [{pos: "I9", targetLevel: '3-2', targetPos: "A1", type: "door"}], enemies: [{pos: "E5", type: "golem", hp: 15}] },
-    '3-2': { name: "Mines - Golem Hall", walls: ["C3", "C7", "G3", "G7"], boulders: ["B2", "B8", "H2", "H8", "D5", "F5"], portals: [{pos: "I9", targetLevel: '3-3', targetPos: "A1", type: "door"}], enemies: [{pos: "E2", type: "golem", hp: 15}, {pos: "E8", type: "golem", hp: 15}, {pos: "H5", type: "golem", hp: 15}], items: [{pos: "E5", type: "potion", value: 5}] },
-    '3-3': { name: "Mines - The Colony", walls: [], boulders: ["C2","C3","C4","C5","C6","C7","C8", "G2","G3","G4","G5","G6","G7","G8"], portals: [{pos: "I9", targetLevel: '3-Boss', targetPos: "E1", type: "door"}], enemies: [{pos: "E4", type: "golem", hp: 15}, {pos: "E6", type: "golem", hp: 15}, {pos: "A5", type: "bat", hp: 4}, {pos: "B5", type: "bat", hp: 4}, {pos: "H2", type: "bat", hp: 4}, {pos: "H8", type: "bat", hp: 4}], items: [{pos: "A9", type: "weapon", value: 2, name: "Rusty Sword"}] },
-    '3-Boss': { name: "Mines - EARTHSHAKER", walls: ["A1", "A9", "I1", "I9"], boulders: ["C3", "C7", "G3", "G7"], portals: [{pos: "E9", targetLevel: 'Level-Select', targetPos: "E6", type: "door"}], enemies: [{pos: "E5", isBoss: true, type: "shaker", hp: 50}] },
+    '3-1': { name: "Mines - Collapse", speaker: "Middle Aged Miner", text: [
+            "Hey there adventurer!","This enemy moves slower, but can really pack a punch!","Break the boulders with a chance of finding loot, or a chance of revealing an enemy..."
+        ], walls: ["B2", "B8", "H2", "H8"], boulders: ["C5", "D5", "E5", "F5", "G5", "E3", "E7"], portals: [{pos: "I9", targetLevel: '3-2', targetPos: "A1", type: "door"}], enemies: [{pos: "E5", type: "golem", hp: 15}] },
+    '3-2': { name: "Mines - Golem Hall", speaker: "Middle Aged Miner", text: [
+            "Here there are a lot more of them...","It is important to clear them out of our mine!","Good luck adventurer!"
+        ], walls: ["C3", "C7", "G3", "G7"], boulders: ["B2", "B8", "H2", "H8", "D5", "F5"], portals: [{pos: "I9", targetLevel: '3-3', targetPos: "A1", type: "door"}], enemies: [{pos: "E2", type: "golem", hp: 15}, {pos: "E8", type: "golem", hp: 15}, {pos: "H5", type: "golem", hp: 15}], items: [{pos: "E5", type: "potion", value: 5}] },
+    '3-3': { name: "Mines - The Colony", speaker: "Middle Aged Miner", text: [
+            "Wow! Look at those bats!","Be warned, they can fly over the boulders...","Remember, breaking the boulders could provide you with helpful loot!"
+        ], walls: [], boulders: ["C2","C3","C4","C5","C6","C7","C8", "G2","G3","G4","G5","G6","G7","G8"], portals: [{pos: "I9", targetLevel: '3-Boss', targetPos: "E1", type: "door"}], enemies: [{pos: "E4", type: "golem", hp: 15}, {pos: "E6", type: "golem", hp: 15}, {pos: "A5", type: "bat", hp: 4}, {pos: "B5", type: "bat", hp: 4}, {pos: "H2", type: "bat", hp: 4}, {pos: "H8", type: "bat", hp: 4}], items: [{pos: "A9", type: "weapon", value: 2, name: "Rusty Sword"}] },
+    '3-Boss': { name: "Mines - EARTHSHAKER", speaker: "Middle Aged Miner", text: [
+            "Woah, I've never met this guy before...","It seems like he can throw boulders around the map!","Be careful adventurer..."
+        ], walls: ["A1", "A9", "I1", "I9"], boulders: ["C3", "C7", "G3", "G7"], portals: [{pos: "E9", targetLevel: 'Level-Select', targetPos: "E6", type: "door"}], enemies: [{pos: "E5", isBoss: true, type: "shaker", hp: 50}] },
 
     // --- LEVEL 4: THE CASTLE ---
     '4-1': { name: "Castle - Gatehouse", walls: ["C3","C7","G3","G7"], spikes: ["C5","D5","E5","F5","G5", "E3","E7","E4","E6","A5","B5","E1","E2","E8","E9","H5","I5"], portals: [{pos: "I9", targetLevel: '4-2', targetPos: "A1", type: "door"}], enemies: [{pos: "D4", type: "guard", hp: 12},{pos: "F4", type: "guard", hp: 12},{pos: "D6", type: "guard", hp: 12},{pos: "F6", type: "guard", hp: 12},] },
@@ -289,7 +464,7 @@ const LEVELS = {
     'EX-1-1': { name: "EX-1: Rabid Tunnels", walls: ["B2", "D2", "F2", "H2", "B8", "D8", "F8", "H8"], hazards: ["C5", "E5", "G5"], portals: [ { pos: "I5", targetLevel: 'EX-1-2', targetPos: "A5", type: "door" } ], enemies: [ {pos: "E3", type: "fast", hp: 4}, {pos: "E7", type: "fast", hp: 4} ] },
     'EX-1-2': { name: "EX-1: Toxic Nest", walls: ["C3", "C7", "G3", "G7"], hazards: ["A1","A2","A3","A7","A8","A9", "I1","I2","I3","I7","I8","I9"], portals: [ { pos: "E9", targetLevel: 'EX-1-3', targetPos: "E1", type: "door" } ], enemies: [ {pos: "B5", type: "fast", hp: 4}, {pos: "H4", type: "fast", hp: 4},{pos: "H6", type: "fast", hp: 4}, {pos: "E6", type: "melee", hp: 12},{pos: "E4", type: "melee", hp: 12} ] },
     'EX-1-3': { name: "EX-1: The Swarm", walls: [], hazards: ["E5"], portals: [ { pos: "I9", targetLevel: 'EX-1-Boss', targetPos: "A1", type: "door" } ], enemies: [ {pos: "C3", type: "fast", hp: 4}, {pos: "G3", type: "fast", hp: 4}, {pos: "C7", type: "fast", hp: 4},{pos: "G5", type: "fast", hp: 4},{pos: "C5", type: "fast", hp: 4}, {pos: "G7", type: "fast", hp: 4} ], items: [ {pos: "A9", type: "potion", value: 5}, {pos: "I1", type: "weapon", value: 2, name: "Rusty Sword"} ] },
-    'EX-1-Boss': { name: "EX-BOSS: PLAGUE KING", walls: ["B2", "B8", "H2", "H8"], hazards: ["A1", "A9", "I1", "I9"], portals: [ { pos: "E5", targetLevel: 'Level-Select', targetPos: "A9", type: "door" } ], enemies: [{pos: "E5", isBoss: true, type: "summoner", hp: 40}] },
+    'EX-1-Boss': { name: "EX-BOSS: PLAGUE KING", walls: ["B2", "B8", "H2", "H8"], hazards: ["A1", "A9", "I1", "I9"], portals: [ { pos: "E5", targetLevel: 'Level-Select', targetPos: "A9", type: "door" } ], enemies: [{pos: "E5", isBoss: true, type: "summoner", skin: "plague_king",hp: 40,}] },
 
     'EX-2-1': { name: "EX-2: Poison Flow", walls: ["B2","B8","H2","H8"], rivers: ["D1","D2","D3","D4","D5","D6","D7","D8", "F1","F2","F3","F4","F5","F6","F7","F8"], thickets: ["C3","C4","C5","C6","C7", "G3","G4","G5","G6","G7"], hazards:  ["C3","C4","C5","C6","C7", "G3","G4","G5","G6","G7", "D9", "F9"], portals: [{pos: "E9", targetLevel: 'EX-2-2', targetPos: "A5", type: "door"}], enemies: [{pos: "A5", type: "fast", hp: 6}, {pos: "I5", type: "fast", hp: 6}, {pos: "E4", type: "ranged"},{pos: "E6", type: "ranged"} ] },
     'EX-2-2': { name: "EX-2: Thorny Mud", walls: ["B2","B4","B6","B8", "H2","H4","H6","H8"], thickets: ["C2","C3","C4","C5","C6","C7","C8", "E2","E3","E4","E5","E6","E7","E8", "G2","G3","G4","G5","G6","G7","G8"], hazards: ["C2","C3","C4","C5","C6","C7","C8", "G2","G3","G4","G5","G6","G7","G8"], portals: [{pos: "I5", targetLevel: 'EX-2-3', targetPos: "A5", type: "door"}], enemies: [{pos: "D5", type: "fast", hp: 6}, {pos: "F5", type: "fast", hp: 6}, {pos: "E9", type: "ranged"},{pos: "E1", type: "ranged"},{pos: "I5", type: "ranged"}] },
@@ -319,7 +494,7 @@ const LEVELS = {
     'EX-3-Boss': { 
         name: "EX-BOSS: ICE QUEEN", walls: ["A1","A9","I1","I9"], ice: ["B2","B8","H2","H8", "C3","C7","G3","G7"],
         portals: [{pos: "E9", targetLevel: 'Level-Select', targetPos: "E9", type: "door"}], 
-        enemies: [{pos: "E5", isBoss: true, type: "summoner", hp: 50}] 
+        enemies: [{pos: "E5", isBoss: true, type: "summoner",skin: "ice_queen", hp: 50}] 
     },
 
     // --- EX-4: THE CLOCKWORK DUNGEON ---
@@ -442,7 +617,7 @@ const LEVELS = {
             { pos: "I1", type: "fast"}, { pos: "A9", type: "fast"}, {pos: "E5", type: "golem"},{pos: "D5"}, {pos: "F5"},{pos: "E4"},{pos: "E6"}
         ],
         hazards: ["D2","E2","F2","D8","E8","F8","B5","H5","H4","H6","B4","B6"],
-        thickets: ["A1","A2","B1","B2","H1","H2","I1","I2","A8","A9","B8","B9","H8","H9","I8","I9"],
+        thickets: ["A1","A2","B1","B2","H1","H2","I1","I2","A8","A9","B8","B9","H8","H9","I8"],
         portals: [
             { pos: "I9", targetLevel: 'W2-2', targetPos: "E6", type: "door" },
         ],
@@ -847,6 +1022,9 @@ let bouldersDestroyed = 0;
 let checkpointLevelId = '0'; 
 let checkpointCoord = 'E6';
 
+let previousHp = 15;
+let levelDamageTaken = false;
+
 function parseCoord(coordString) {
     const colChar = coordString.charAt(0).toUpperCase();
     const rowChar = coordString.slice(1);
@@ -959,7 +1137,20 @@ function loadGame() {
         // Convert Array back to Set
         roomsVisited = new Set(state.visitedRooms || []);
 
-        if (currentLevelId === 'Level-Select' || currentLevelId === '0' || currentLevelId === 'World-2-Select' || currentLevelId === 'World-3-Select' || currentLevelId === 'World-Select') applyGlobalUnlocks();
+        if (currentLevelId === 'Level-Select' || currentLevelId === '0' || currentLevelId === 'World-2-Select' || currentLevelId === 'World-3-Select' || currentLevelId === 'World-Select' || currentLevelId === 'Weapons') applyGlobalUnlocks();
+
+        if (currentLevelId.endsWith('D') && currentLevelId !== '0D' && !currentLevelId.endsWith('CD')) {
+            regenerateDungeon();
+            
+            // Sync the current room's generated enemies to match the saved active enemies
+            if (LEVELS[currentLevelId] && LEVELS[currentLevelId].enemies) {
+                // If there are no alive enemies in the saved state, mark the newly generated ones as dead
+                const aliveSaved = state.enemies.filter(e => e.alive).length;
+                if (aliveSaved === 0) {
+                    LEVELS[currentLevelId].enemies.forEach(e => e.isDead = true);
+                }
+            }
+        }
 
         if (LEVELS[currentLevelId]) {
              document.querySelector('h1').textContent = LEVELS[currentLevelId].name;
@@ -987,22 +1178,22 @@ function respawn() {
     enemies = []; items = []; boulders = []; tempWalls = []; crystals = [];
 
     resetRPGStats(); 
+    
     // 2. Reset turn mechanics
     playerActionsLeft = 2;
-    enemies = []; items = []; boulders = []; tempWalls = []; crystals = [];
     voidRadius = 0; turnCounter = 0; player.energySapped = false;
     conveyorDir = 1; bossRotation = 0;
     
     // 3. Reset endless depth
     endlessDepth = 0;
 
-    // 4. Teleport the player to their last safe checkpoint!
-    currentLevelId = checkpointLevelId || '0';
-    const start = parseCoord(checkpointCoord || 'E6');
+    // 4. Teleport the player back to the Main Room!
+    currentLevelId = '0'; // Forces the game back to the hub instead of a checkpoint
+    const start = parseCoord('E6'); // Default start position for the hub
     player.x = start.x; 
     player.y = start.y;
 
-    // 5. Save the game at the checkpoint and reload the screen
+    // 5. Save the game and reload the screen
     saveGame(); 
     location.reload();
 }
@@ -1062,6 +1253,14 @@ function applyGlobalUnlocks() {
         if (gameProgress.tutorialComplete) {
         const hub = LEVELS['0'];
         const wIndex = hub.walls.indexOf("B1");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+        }
+    }
+
+        if (gameProgress.Bow1Complete) {
+        const hub = LEVELS['Bows'];
+        const wIndex = hub.walls.indexOf("C2");
         if (wIndex > -1) {
             hub.walls.splice(wIndex, 1);
         }
@@ -1210,6 +1409,7 @@ function initGame() {
     const container = document.getElementById('game-container');
     const grid = document.getElementById('grid');
     container.style.position = 'relative';
+    container.style.display = 'flex'; // Reveals the game board!
 
     let mainCol = document.getElementById('main-game-col');
     if (!mainCol) {
@@ -1235,7 +1435,7 @@ function initGame() {
 }
 
 function triggerDamage(x, y, amount, isPlayer) {
-    const topPos = (y * 52) + 25; const leftPos = (x * 52) + 25;
+    const topPos = (y * 60) + 25; const leftPos = (x * 60) + 25;
     const el = document.createElement('div');
     el.className = `damage-text ${isPlayer ? 'dmg-player' : 'dmg-enemy'}`;
     el.textContent = "-" + amount;
@@ -1246,7 +1446,7 @@ function triggerDamage(x, y, amount, isPlayer) {
 }
 
 function triggerHeal(x, y, amount) {
-    const topPos = (y * 52) + 25; const leftPos = (x * 52) + 25;
+    const topPos = (y * 60) + 25; const leftPos = (x * 60) + 25;
     const el = document.createElement('div');
     el.className = "heal-text"; el.textContent = "+" + amount;
     el.style.top = topPos + "px"; el.style.left = leftPos + "px";
@@ -1257,15 +1457,17 @@ function triggerHeal(x, y, amount) {
 function triggerAttackAnim(x, y, type) {
     const grid = document.getElementById('grid');
     if (!grid) return;
-    const rect = grid.getBoundingClientRect();
-    const topPos = rect.top + 4 + (y * 60); 
-    const leftPos = rect.left + 4 + (x * 60);
+    
+    // Calculate based on local 60px cell size
+    const topPos = 4 + (y * 60); 
+    const leftPos = 4 + (x * 60);
 
     const el = document.createElement('div');
     el.className = `attack-anim ${type}`;
-    el.style.position = 'fixed'; 
+    el.style.position = 'absolute'; // Ensure it stays inside the grid
     el.style.top = topPos + "px"; el.style.left = leftPos + "px";
-    document.body.appendChild(el);
+    
+    grid.appendChild(el); // Append to grid instead of document.body
     setTimeout(() => el.remove(), 600);
 }
 
@@ -1431,7 +1633,8 @@ function loadLevel(levelId, startCoord) {
     if (levelId === 'W2-2-4') LEVELS['W2-2-4'].thickets = [];
 
     // Global Unlocks check
-    if (levelId === 'Level-Select' || levelId === '0' || levelId === 'World-2-Select' || levelId.endsWith("-Select")) applyGlobalUnlocks();
+// Global Unlocks check
+    if (levelId === 'Level-Select' || levelId === '0' || levelId === 'World-2-Select' || levelId.endsWith("-Select") || levelId === 'Bows' || levelId === 'Weapons') applyGlobalUnlocks();
 
         // --- World 2 Boss Unlock Logic ---
     if (levelId === 'W2-1' && gameProgress.w2l1s1 && gameProgress.w2l1s2 && gameProgress.w2l1s3) {
@@ -1527,6 +1730,7 @@ function loadLevel(levelId, startCoord) {
                 hp: eHp, maxHp: eHp, alive: true, wasHit: false,
                 isBoss: data.isBoss || false,
                 type: data.type || 'melee',
+                skin: data.skin,
                 isHidden: data.isHidden || false, 
                 summonCooldown: 0, stunned: false, canMove: true 
             });
@@ -1605,6 +1809,11 @@ function loadLevel(levelId, startCoord) {
     if (aliveEnemies === 0 && levelId !== 'Endless' && levelId !== 'Custom') {
         checkpointLevelId = levelId;
         checkpointCoord = startCoord;
+        
+        // NEW: Fully heal the player, but ONLY if we are NOT in a Dungeon room
+        if (!levelId.endsWith('D')) {
+            player.hp = player.maxHp;
+        }
     }
 
     drawGrid(); updateStats(); saveGame(); 
@@ -1648,6 +1857,7 @@ function rotatePoint(x, y, cx, cy, times) {
 
 function drawGrid() {
     const gridEl = document.getElementById('grid');
+
     gridEl.innerHTML = ''; 
     gridEl.className = ''; 
     const currentMap = LEVELS[currentLevelId];
@@ -1763,6 +1973,20 @@ function drawGrid() {
                      else if(enemyHere.type === 'mud_monster') { eIcon.textContent = ''; cell.classList.add('boss', 'boss-mud'); }
                      else if(enemyHere.type === 'tangler') { eIcon.textContent = '🥀'; cell.classList.add('boss', 'boss-tangler'); }
                      else if(enemyHere.type === 'zephyr') { eIcon.textContent = ''; cell.classList.add('boss', 'boss-zephyr'); }
+                     else if (enemyHere.type === 'summoner') {
+                        eIcon.textContent = ''; // Clear text so the image shows cleanly
+                        cell.classList.add('boss');
+                        
+                        if (enemyHere.skin === 'broodmother') {
+                            cell.classList.add('boss-broodmother');
+                        } else if (enemyHere.skin === 'plague_king') {
+                            cell.classList.add('boss-plague');
+                        } else if (enemyHere.skin === 'ice_queen') {
+                            cell.classList.add('boss-ice'); // You already have some CSS for this!
+                        } else {
+                            eIcon.textContent = 'B'; // Fallback if no skin is defined
+                        }
+                    }
                      else { eIcon.textContent = 'B'; cell.classList.add('boss'); }
                      if (enemyHere.hp <= enemyHere.maxHp / 2) cell.classList.add('boss-enraged');
                 } else {
@@ -1774,7 +1998,7 @@ function drawGrid() {
                      else if(enemyHere.type === 'guard') { eIcon.textContent = 'K'; cell.classList.add('enemy', 'enemy-guard'); }
                      else if(enemyHere.type === 'yeti') { eIcon.textContent = 'Y'; cell.classList.add('enemy', 'enemy-yeti'); }
                      else if(enemyHere.type === 'wraith') { eIcon.textContent = '👻'; cell.classList.add('enemy', 'enemy-wraith'); }
-                     else if(enemyHere.type === 'leech') { eIcon.textContent = '●'; cell.classList.add('enemy', 'enemy-leech'); }
+                     else if(enemyHere.type === 'leech') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-leech'); }
                      else if(enemyHere.type === 'sentinel') { eIcon.textContent = '🧲'; cell.classList.add('enemy', 'enemy-sentinel'); }
                      else if(enemyHere.type === 'welder') { eIcon.textContent = '🔥'; cell.classList.add('enemy', 'enemy-welder'); }
                      else if(enemyHere.type === 'slime') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-slime'); }
@@ -2174,6 +2398,8 @@ if (e.key === 'm' || e.key === 'M') {
 
         gameProgress.tutorialComplete = true;
 
+        gameProgress.Bow1Complete = true;
+
         gameProgress.w2l1s1 = true;
         gameProgress.w2l1s2 = true;
         gameProgress.w2l1s3 = true;
@@ -2315,7 +2541,13 @@ if (isDialogueOpen) {
 
 function playerAttack() {
     let hitSomething = false;
-    const directions = [{x:0, y:-1}, {x:0, y:1}, {x:-1, y:0}, {x:1, y:0}];
+    let directions = [{x:0, y:-1}, {x:0, y:1}, {x:-1, y:0}, {x:1, y:0}];
+
+    // --- NEW: WEAPON MODES ---
+    // If in the Bow levels, attack orthogonally with a 1-space gap (Distance 2)
+    if (currentLevelId.startsWith('Bow')) {
+        directions = [{x:0, y:-2}, {x:0, y:2}, {x:-2, y:0}, {x:2, y:0}];
+    }
     
     const isWorld1 = (currentLevelId.startsWith('3-') || currentLevelId.startsWith('2-') || currentLevelId.startsWith('EX') || currentLevelId.startsWith('1-') || currentLevelId.startsWith('4-') || currentLevelId.startsWith('5-')) && !currentLevelId.endsWith('D');
 
@@ -2625,6 +2857,8 @@ function handleTurn(dx, dy) {
     if (targetPortal) {
         if (currentLevelId === 'Tutorial-Boss') gameProgress.tutorialComplete = true; 
 
+        if (currentLevelId === 'Bow1B') gameProgress.Bow1Complete = true; 
+
         if (currentLevelId === 'W2-1-1') gameProgress.w2l1s1 = true;
         if (currentLevelId === 'W2-1-2') gameProgress.w2l1s2 = true;
         if (currentLevelId === 'W2-1-3') gameProgress.w2l1s3 = true;
@@ -2692,6 +2926,8 @@ function handleTurn(dx, dy) {
          
          // NEW: Achievement - Curiosity
          if (player.hp <= 0 && typeof unlockAchievement === 'function') unlockAchievement('curiosity');
+         // --- NEW: Achievement - Watch Your Step ---
+         else if (player.hp > 0 && typeof unlockAchievement === 'function') unlockAchievement('watch_your_step');
          
          log("Fell into the abyss! -5 HP");
          currentLevelScore -= 50;
@@ -2798,6 +3034,42 @@ function handleTurn(dx, dy) {
 }
 
 function processOneEnemyTurn(enemy) {
+
+// --- ICE QUEEN (SUMMONER SKIN) BOSS LOGIC ---
+    if (enemy.isBoss && enemy.type === "summoner" && enemy.skin === "ice_queen") {
+        enemy.abilityCooldown = (enemy.abilityCooldown || 0) + 1;
+
+        // 1. PASSIVE: 33% chance to turn her current square into ice before moving
+        if (Math.random() < 0.33) {
+            const coord = `${ALPHABET[enemy.x]}${enemy.y+1}`;
+            if (!LEVELS[currentLevelId].ice) LEVELS[currentLevelId].ice = [];
+            if (!LEVELS[currentLevelId].ice.includes(coord)) {
+                LEVELS[currentLevelId].ice.push(coord);
+            }
+        }
+
+        // 2. ACTIVE: Summon a Yeti (75%) or Fast (25%) every 6 turns
+        if (enemy.abilityCooldown % 6 === 0) {
+            const openSpots = [{x: enemy.x-1, y: enemy.y}, {x: enemy.x+1, y: enemy.y}, {x: enemy.x, y: enemy.y-1}, {x: enemy.x, y: enemy.y+1}].filter(p => p.x >=0 && p.x <9 && p.y >=0 && p.y <9 && !isWall(p.x, p.y) && !isBoulder(p.x, p.y));
+            if (openSpots.length > 0) {
+                const spawn = openSpots[Math.floor(Math.random() * openSpots.length)];
+                
+                // 75% chance for Yeti, 25% chance for Fast
+                const spawnType = Math.random() < 0.75 ? 'yeti' : 'fast';
+                const spawnHp = spawnType === 'yeti' ? 15 : 6; 
+                
+                enemies.push({ id: enemies.length, x: spawn.x, y: spawn.y, hp: spawnHp, maxHp: spawnHp, alive: true, type: spawnType, wasHit: false });
+                log(`The Ice Queen summons a ${spawnType.toUpperCase()}!`);
+                return true; // Ends her turn
+            }
+        }
+        
+        // Prevent the generic summoner logic from triggering later in the file
+        enemy.summonCooldown = 0; 
+        
+        // Falling through here lets the standard game code handle her 
+        // walking towards the player and using the standard 8-square Boss Melee!
+    }
 
     // --- MUD MONSTER LOGIC ---
     if (enemy.type === 'mud_monster') {
@@ -2933,6 +3205,10 @@ function processOneEnemyTurn(enemy) {
                     triggerAttackAnim(player.x, player.y, 'anim-web'); 
                     player.x = targetX; player.y = targetY;
                     log("Sentinel pulls you in!");
+
+                    // --- NEW: Set flag for achievement ---
+                    player.pulledBySentinel = true;
+
                     if (voidRadius > 0 && (player.x < voidRadius || player.x >= GRID_SIZE - voidRadius || player.y < voidRadius || player.y >= GRID_SIZE - voidRadius)) {
                         player.hp -= 5; triggerDamage(player.x, player.y, 5, true); log("Dragged into the Void!! -5 HP");
                     }
@@ -2957,24 +3233,134 @@ function processOneEnemyTurn(enemy) {
         }
     }
 
-    // --- HYDRA BOSS LOGIC ---
+// --- HYDRA BOSS LOGIC ---
     if (enemy.isBoss && enemy.type === "hydra") {
-        enemy.summonCooldown = (enemy.summonCooldown || 0) + 1;
-        if (enemy.summonCooldown >= 4) { 
-            const openSpots = [{x: enemy.x-1, y: enemy.y}, {x: enemy.x+1, y: enemy.y}, {x: enemy.x, y: enemy.y-1}, {x: enemy.x, y: enemy.y+1}].filter(p => p.x >=0 && p.x <9 && p.y >=0 && p.y <9 && !isWall(p.x, p.y));
-            if (openSpots.length > 0) {
-                const spawn = openSpots[Math.floor(Math.random() * openSpots.length)];
-                enemies.push({ id: enemies.length, x: spawn.x, y: spawn.y, hp: 6, maxHp: 6, alive: true, type: 'ranged', wasHit: false });
-                log("A new Hydra head erupts from the muck!");
-                enemy.summonCooldown = 0; return true; 
+        
+        // 1. PASSIVE: 25% chance to spawn a ranged minion when taking damage
+        enemy.lastHp = enemy.lastHp || enemy.maxHp;
+        if (enemy.hp < enemy.lastHp) {
+            enemy.lastHp = enemy.hp; // Update tracking
+            if (Math.random() <= 0.25) {
+                let emptySpots = [];
+                for(let x=0; x<9; x++){
+                    for(let y=0; y<9; y++){
+                        // Find empty spots (not walls, boulders, player, or enemies)
+                        if(!isWall(x,y) && !isBoulder(x,y) && !(player.x===x && player.y===y) && !enemies.some(e=>e.alive && e.x===x && e.y===y)){
+                            emptySpots.push({x,y});
+                        }
+                    }
+                }
+                if(emptySpots.length > 0) {
+                    let spot = emptySpots[Math.floor(Math.random()*emptySpots.length)];
+                    enemies.push({ id: enemies.length, x: spot.x, y: spot.y, hp: 3, maxHp: 3, alive: true, type: 'ranged', wasHit: false });
+                    log("Toxic blood splatters... A ranged minion spawns!");
+                }
             }
         }
-        const dx = player.x - enemy.x; const dy = player.y - enemy.y; const dist = Math.abs(dx) + Math.abs(dy);
-        if ((dx === 0 || dy === 0) && dist <= 4 && dist > 1) {
-            let blocked = false;
-            if (dx === 0) { const start = Math.min(player.y, enemy.y) + 1; const end = Math.max(player.y, enemy.y); for (let checkY = start; checkY < end; checkY++) { if (isWall(enemy.x, checkY)) blocked = true; } } 
-            else { const start = Math.min(player.x, enemy.x) + 1; const end = Math.max(player.x, enemy.x); for (let checkX = start; checkX < end; checkX++) { if (isWall(checkX, enemy.y)) blocked = true; } }
-            if (!blocked) { triggerAttackAnim(player.x, player.y, 'anim-web'); player.hp -= 2; triggerDamage(player.x, player.y, 2, true); log("Hydra spits ACID! -2 HP"); return true; }
+
+        // 2. ACTIVE STATE: Executing the Crossfire Attack
+        if (enemy.hydraState === "telegraph_crossfire") {
+            log("Hydra unleashes the CROSSFIRE!");
+            LEVELS[currentLevelId].windWarnings = []; 
+            
+            let hitPlayer = false;
+            for(let i=0; i<9; i++) {
+                // Check Column
+                if (!isWall(enemy.crossCol, i) && !isBoulder(enemy.crossCol, i)) {
+                    triggerAttackAnim(enemy.crossCol, i, 'anim-web'); 
+                    if (player.x === enemy.crossCol && player.y === i) hitPlayer = true;
+                }
+                // Check Row
+                if (!isWall(i, enemy.crossRow) && !isBoulder(i, enemy.crossRow)) {
+                    triggerAttackAnim(i, enemy.crossRow, 'anim-web');
+                    if (player.x === i && player.y === enemy.crossRow) hitPlayer = true;
+                }
+            }
+            
+            if (hitPlayer) {
+                player.hp -= 4; triggerDamage(player.x, player.y, 4, true);
+                log("Caught in the Crossfire! -4 HP");
+            } else {
+                log("You evaded the Crossfire!");
+            }
+            
+            enemy.hydraState = "idle";
+            return true; // Turn ends after attacking
+        }
+
+        // --- CUSTOM MOVEMENT & MELEE LOGIC ---
+        const tryMeleeOrMove = () => {
+            let dx = player.x - enemy.x;
+            let dy = player.y - enemy.y;
+            
+            // Check if player is in the 8 surrounding squares
+            if (Math.abs(dx) <= 1 && Math.abs(dy) <= 1) {
+                player.hp -= 2; // You can adjust this damage number!
+                triggerDamage(player.x, player.y, 2, true);
+                triggerAttackAnim(player.x, player.y, 'anim-scratch');
+                log("The Hydra's heads viciously snap at you! -2 HP");
+                return; // Stop here so it doesn't also move
+            }
+
+            // Otherwise, move towards the player
+            let moved = false;
+            
+            // Try moving on the axis with the largest distance first
+            if (Math.abs(dx) > Math.abs(dy) && dx !== 0) {
+                let nx = enemy.x + Math.sign(dx);
+                if (!isWall(nx, enemy.y) && !isBoulder(nx, enemy.y) && !(player.x === nx && player.y === enemy.y) && !enemies.some(e => e.alive && e.x === nx && e.y === enemy.y)) {
+                    enemy.x = nx; moved = true;
+                }
+            } 
+            // Try vertical movement if horizontal failed or wasn't needed
+            if (!moved && dy !== 0) {
+                let ny = enemy.y + Math.sign(dy);
+                if (!isWall(enemy.x, ny) && !isBoulder(enemy.x, ny) && !(player.x === enemy.x && player.y === ny) && !enemies.some(e => e.alive && e.x === enemy.x && e.y === ny)) {
+                    enemy.y = ny; moved = true;
+                }
+            }
+            // Fallback: If it got stuck trying to move vertically, try horizontal again
+            if (!moved && dx !== 0) {
+                let nx = enemy.x + Math.sign(dx);
+                if (!isWall(nx, enemy.y) && !isBoulder(nx, enemy.y) && !(player.x === nx && player.y === enemy.y) && !enemies.some(e => e.alive && e.x === nx && e.y === enemy.y)) {
+                    enemy.x = nx; moved = true;
+                }
+            }
+            if (moved) log("The Hydra slithers aggressively!");
+        };
+
+        // 3. ACTION CYCLE (Turn 1, Turn 2, Turn 3)
+        enemy.hydraCycle = enemy.hydraCycle || 0;
+
+        if (enemy.hydraCycle < 2) {
+            // Turn 1 and 2: Melee or Move
+            enemy.hydraCycle++;
+            tryMeleeOrMove();
+            return true; 
+        } else {
+            // Turn 3: 50% Melee/Move, 50% Telegraph Crossfire
+            enemy.hydraCycle = 0; 
+            
+            if (Math.random() < 0.5) {
+                tryMeleeOrMove();
+                return true; 
+            } else {
+                enemy.hydraState = "telegraph_crossfire";
+                
+                // Lock in the targets
+                enemy.crossCol = enemy.x; 
+                enemy.crossRow = enemy.y;
+                
+                if (!LEVELS[currentLevelId].windWarnings) LEVELS[currentLevelId].windWarnings = [];
+                LEVELS[currentLevelId].windWarnings = [];
+                
+                for(let i=0; i<9; i++) {
+                    LEVELS[currentLevelId].windWarnings.push(`${ALPHABET[enemy.crossCol]}${i+1}`);
+                    LEVELS[currentLevelId].windWarnings.push(`${ALPHABET[i]}${enemy.crossRow+1}`);
+                }
+                log("The Hydra takes a deep breath... The grid is targeted!");
+                return true; 
+            }
         }
     }
 
@@ -2995,17 +3381,68 @@ function processOneEnemyTurn(enemy) {
         }
     }
 
-    // --- EARTHSHAKER LOGIC ---
+// --- EARTHSHAKER LOGIC ---
     if (enemy.isBoss && enemy.type === "shaker") {
         enemy.quakeCooldown = (enemy.quakeCooldown || 0) + 1;
-        if (enemy.quakeCooldown >= 3) {
-            log("EARTHSHAKER slams the ground!"); document.getElementById('grid').classList.add('quake-anim'); setTimeout(() => document.getElementById('grid').classList.remove('quake-anim'), 500);
-            player.hp -= 1; triggerDamage(player.x, player.y, 1, true);
-            const shifts = [{x:1,y:0}, {x:-1,y:0}, {x:0,y:1}, {x:0,y:-1}]; const s = shifts[Math.floor(Math.random()*shifts.length)]; const nx = player.x + s.x; const ny = player.y + s.y;
-            if (nx >= 0 && nx < 9 && ny >= 0 && ny < 9 && !isWall(nx,ny) && !isBoulder(nx,ny)) { player.x = nx; player.y = ny; } enemy.quakeCooldown = 0; return true; 
+        
+        // TELEGRAPH PHASE: Warn the player so they can avoid it!
+        if (enemy.quakeCooldown === 3) {
+            log("EARTHSHAKER raises its massive fists... Get back!");
+            document.getElementById('grid').classList.add('quake-anim'); 
+            setTimeout(() => document.getElementById('grid').classList.remove('quake-anim'), 200);
+            return true; // Spends its turn charging up
+        }
+
+        // SLAM PHASE
+        if (enemy.quakeCooldown >= 4) {
+            log("EARTHSHAKER slams the ground!"); 
+            document.getElementById('grid').classList.add('screen-shake'); 
+            setTimeout(() => document.getElementById('grid').classList.remove('screen-shake'), 500);
+            
+            // 1. Avoidable Damage (Only hurts if player is within 2 tiles)
+            const dist = Math.abs(player.x - enemy.x) + Math.abs(player.y - enemy.y);
+            if (dist <= 2) {
+                player.hp -= 3; 
+                triggerDamage(player.x, player.y, 3, true);
+                log("Caught in the epicenter! -3 HP");
+            } else {
+                log("You evaded the main shockwave!");
+            }
+
+            // 2. Random Push (Always happens, no damage)
+            const shifts = [{x:1,y:0}, {x:-1,y:0}, {x:0,y:1}, {x:0,y:-1}]; 
+            const s = shifts[Math.floor(Math.random()*shifts.length)]; 
+            const nx = player.x + s.x; const ny = player.y + s.y;
+            if (nx >= 0 && nx < 9 && ny >= 0 && ny < 9 && !isWall(nx,ny) && !isBoulder(nx,ny)) { 
+                player.x = nx; player.y = ny; 
+                log("The quake throws you off balance!");
+            } 
+            
+            // 3. Spawn 1 to 3 Boulders randomly
+            const numBoulders = Math.floor(Math.random() * 3) + 1; 
+            let spawned = 0;
+            for (let i = 0; i < 20; i++) { // Try 20 random spots
+                const bx = Math.floor(Math.random() * 9);
+                const by = Math.floor(Math.random() * 9);
+                
+                // Only spawn on truly empty tiles
+                if (!isWall(bx, by) && !isBoulder(bx, by) && 
+                    !(bx === player.x && by === player.y) && 
+                    !enemies.some(e => e.alive && e.x === bx && e.y === by) &&
+                    !crystals.some(c => c.x === bx && c.y === by)) {
+                    
+                    boulders.push({ x: bx, y: by, hp: 6 });
+                    triggerAttackAnim(bx, by, 'anim-shockwave'); // Dust effect
+                    spawned++;
+                }
+                if (spawned >= numBoulders) break;
+            }
+            if (spawned > 0) log(`Falling debris! ${spawned} boulder(s) crashed down.`);
+
+            enemy.quakeCooldown = 0; 
+            return true; 
         }
     }
-
     // --- GEAR GRINDER LOGIC ---
     if (enemy.isBoss && enemy.type === 'gear') {
         enemy.summonCooldown = (enemy.summonCooldown || 0) + 1;
@@ -3448,6 +3885,10 @@ function processOneEnemyTurn(enemy) {
 function moveEnemies() {
     let enemyAction = false;
     let oldHp = player.hp;
+    let turnStartHp = player.hp; // <-- NEW: Store the true HP for the end-of-turn check
+    
+    // --- NEW: Reset the flag at the start of the enemy turn ---
+    player.pulledBySentinel = false;
 
     enemies.forEach((enemy) => {
         if (!enemy.alive) return;
@@ -3470,17 +3911,14 @@ function moveEnemies() {
                      if(enemy.hp <= 0) {
                         enemy.alive = false; log("Enemy died in trap!");
                         
-                        // NEW: Achievement - Environmental Specialist
                         if (typeof unlockAchievement === 'function') unlockAchievement('environmental_specialist');
                         
-                        // --- NEW: Dungeon Persistence for Traps ---
                         if (currentLevelId.endsWith('D')) {
                             const globalLevel = LEVELS[currentLevelId];
                             if (globalLevel && globalLevel.enemies && globalLevel.enemies[enemy.id]) {
                                 globalLevel.enemies[enemy.id].isDead = true;
                             }
                         }
-                        // ------------------------------------------
 
                         const isWorld2 = currentLevelId.startsWith('World-2') || currentLevelId.startsWith('W2');
                         
@@ -3495,12 +3933,20 @@ function moveEnemies() {
             }
 
             if (didSomething) enemyAction = true;
-            if (player.hp < oldHp) { oldHp = player.hp; break; }
+            // oldHp is used here to break early if taking damage, which is fine
+            if (player.hp < oldHp) { oldHp = player.hp; break; } 
         }
     });
 
-    if (player.hp < oldHp || enemyAction) {
-        if (player.hp < oldHp) {
+    // --- FIX: Compare against turnStartHp instead of oldHp ---
+    if (player.hp < turnStartHp || enemyAction) {
+        
+        // --- NEW: Check for Fatal Attraction ---
+        if (player.hp < turnStartHp && player.pulledBySentinel) {
+            if (typeof unlockAchievement === 'function') unlockAchievement('fatal_attraction');
+        }
+
+        if (player.hp < turnStartHp) {
              document.getElementById('grid').classList.add('screen-shake');
              setTimeout(() => document.getElementById('grid').classList.remove('screen-shake'), 400);
         }
@@ -3588,24 +4034,34 @@ function closeScores() {
 
 document.addEventListener('mousemove', (e) => {
     const tooltip = document.getElementById('tooltip');
-    if (tooltip.style.display === 'block') {
-        tooltip.style.left = (e.pageX + 15) + 'px';
-        tooltip.style.top = (e.pageY + 15) + 'px';
+    if (tooltip && tooltip.style.display === 'block') {
+        const wrapper = document.getElementById('master-wrapper');
+        const rect = wrapper.getBoundingClientRect();
+        
+        // Calculate the current scale factor
+        const scale = rect.width / 1000;
+        
+        // Convert screen coordinates to the scaled wrapper coordinates
+        const scaledX = (e.clientX - rect.left) / scale;
+        const scaledY = (e.clientY - rect.top) / scale;
+
+        tooltip.style.left = (scaledX + 15) + 'px';
+        tooltip.style.top = (scaledY + 15) + 'px';
     }
 });
 
 function triggerDeathParticles(x, y, color = "#ef4444") {
     const grid = document.getElementById('grid');
-    const rect = grid.getBoundingClientRect();
-    const centerX = rect.left + 4 + (x * 52) + 25;
-    const centerY = rect.top + 4 + (y * 52) + 25;
+    
+    // Find center of the local 60px cell
+    const centerX = 4 + (x * 60) + 30;
+    const centerY = 4 + (y * 60) + 30;
 
     for (let i = 0; i < 8; i++) {
         const p = document.createElement('div');
         p.className = 'particle';
         p.style.backgroundColor = color;
         
-        // Random trajectory
         const tx = (Math.random() - 0.5) * 100 + "px";
         const ty = (Math.random() - 0.5) * 100 + "px";
         p.style.setProperty('--tx', tx);
@@ -3613,19 +4069,24 @@ function triggerDeathParticles(x, y, color = "#ef4444") {
         
         p.style.left = centerX + "px";
         p.style.top = centerY + "px";
-        p.style.position = 'fixed';
+        p.style.position = 'absolute';
         
-        document.body.appendChild(p);
+        grid.appendChild(p); // Append to grid instead of body
         setTimeout(() => p.remove(), 600);
     }
 }
 
 function regenerateDungeon() {
     console.log("Starting Full Dungeon Generation...");
-    // Generate Floor 1
+    // Generate Dungeon 1
     generateFloor(1);
-    // Generate Floor 2
     generateFloor(2);
+
+    // Generate Dungeon 2
+    generateFloor(3);
+    generateFloor(4);
+
+
     console.log("Dungeon Generation Complete.");
 }
 
@@ -3815,7 +4276,7 @@ function showLevelUpMenu() {
 
     // --- FLOOR 1 UPGRADES ---
     // Now contains: Stats, Mend, Wall, and CRYSTAL BOMB
-    if (floor === '1' || floor === 'W2' || floor === 'W3' || floor === 'EX' || floor === '0') {
+    if (floor === '1' || floor === '3' || floor === 'W2' || floor === 'W3' || floor === 'EX' || floor === '0') {
         // Stats
         if (player.maxHp < 30) upgrades.push({ id: 'stat_hp', name: "Vitality", icon: "❤️", desc: "Max HP +5 (Cap: 30)" });
         if (player.damage < 8) upgrades.push({ id: 'stat_dmg', name: "Strength", icon: "⚔️", desc: "Damage +1 (Cap: 8)" });
@@ -3837,7 +4298,7 @@ function showLevelUpMenu() {
     
     // --- FLOOR 2 UPGRADES ---
     // Now contains: Passives, Hookshot, CLEAVE, and PHASE
-    else if (floor === '2') {
+    else if (floor === '2' || floor === '4') {
         // Passives
         upgrades.push({ id: 'stat_crit', name: "Precision", icon: "🎯", desc: "+15% Crit Chance" });
         upgrades.push({ id: 'stat_dodge', name: "Reflexes", icon: "💨", desc: "+10% Dodge Chance" });
@@ -4006,13 +4467,23 @@ function castSkill(name) {
 
         player.cooldowns.cleave = 5; playerActionsLeft -= 2; actionUsed = true;
     }
-    if (name === 'dash') {
+if (name === 'dash') {
         const dir = player.facing;
         let targetX = player.x + (dir.x * 2); let targetY = player.y + (dir.y * 2);
+        
+        // --- NEW: Identify the tile being skipped over ---
+        let skippedX = player.x + dir.x; let skippedY = player.y + dir.y;
+
         if (targetX < 0 || targetX >= 9 || targetY < 0 || targetY >= 9 || isWall(targetX, targetY) || isBoulder(targetX, targetY)) {
             targetX = player.x + dir.x; targetY = player.y + dir.y;
             if (isWall(targetX, targetY) || isBoulder(targetX, targetY)) { log("Path blocked!"); return; }
+        } else {
+            // --- NEW: ACHIEVEMENT HOOK (If we successfully jump 2 tiles over an obstacle) ---
+            if (isWall(skippedX, skippedY) || isBoulder(skippedX, skippedY)) {
+                if (typeof unlockAchievement === 'function') unlockAchievement('ghostly_step');
+            }
         }
+        
         triggerAttackAnim(player.x, player.y, 'anim-shockwave');
         player.x = targetX; player.y = targetY;
         triggerAttackAnim(player.x, player.y, 'anim-web');
@@ -4519,3 +4990,24 @@ function startCredits() {
         }
 // Don't start game immediately. Show menu first.
 initProfileMenu();
+
+// --- AUTO SCALING LOGIC ---
+function scaleGame() {
+    const wrapper = document.getElementById('master-wrapper');
+    if (!wrapper) return;
+
+    // The baseline dimensions of the game wrapper
+    const baseWidth = 1200;
+    const baseHeight = 800;
+
+    // Calculate the scale needed to fit the current window perfectly
+    // Multiplying by 0.98 gives a tiny margin so it doesn't touch the screen edges
+    const scale = Math.min(window.innerWidth / baseWidth, window.innerHeight / baseHeight);
+
+    wrapper.style.transform = `scale(${scale})`;
+}
+
+// Run immediately and whenever the window resizes
+window.addEventListener('resize', scaleGame);
+document.addEventListener('DOMContentLoaded', scaleGame);
+scaleGame();
