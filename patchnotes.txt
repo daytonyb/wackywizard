@@ -1,0 +1,19 @@
+v1.01.03
+- Added artwork for thickets, rivers, potions, swords, and mages.
+- Added main menu for better user experience.
+- Changed starting level layout to help new players. 
+- Moved credits and custom levels to the main menu.
+- Added a new "How To Play" section with basic controls and tips. 
+- XP bar now only appears in dungeon mode.
+- Added a background image to the entire game. 
+
+v1.01.04
+- Changed boss fights for 1-3, EX2, and EX3
+- Added Dungeon 2 Floors 1 and 2
+- Added Bow Levels 1 and 2 in Other Weapons Mode
+- Changed how window sizing works
+- Added dialogue for 1-3
+- Added some credit levels (Asher/Andrew)
+- Changed how saving works so players will start where they left off (dying still resets you though)
+- Added art for leeches and warps
+- Added the achievements Ghostly Step, Watch Your Step, and Fatal Attraction
