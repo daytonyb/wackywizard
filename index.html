@@ -8,7 +8,9 @@
 </head>
 <body>
 
-    <h1>Coordinate RPG</h1>
+    <div id="master-wrapper">
+
+        <h1></h1>
 
 <div id="main-menu-screen">
     <div id="menu-sidebar">
@@ -29,16 +31,18 @@
     </div>
 
     <div id="custom-info-overlay" style="display:none; flex-direction:column; align-items:flex-start; margin-left:50px; background:rgba(0,0,0,0.6); padding:40px; border-radius:12px; border:2px solid #444; animation:slideInRight 0.3s ease-out; max-width: 500px;">
-        <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">Patch Notes for Wacky Wizard v1.01.03</h2>
+        <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">Patch Notes for Wacky Wizard v1.01.04</h2>
         
         <p style="color: #eee; line-height: 1.6; font-family: 'Inter', sans-serif; margin-bottom: 15px;">
-            - Added artwork for thickets, rivers, potions, swords, and mages. <br>
-            - Added main menu for better user experience. <br>
-            - Changed starting level layout to help new players. <br>
-            - Moved credits and custom levels to the main menu. <br>
-            - Added a new "How To Play" section with basic controls and tips. <br>
-            - XP bar now only appears in dungeon mode. <br>
-            - Added a background image to the entire game. <br>
+            - Changed boss fights for 1-3, EX2, and EX3<br>
+            - Added Dungeon 2 Floors 1 and 2<br>
+            - Added Bow Levels 1 and 2 in Other Weapons Mode<br>
+            - Changed how window sizing works<br>
+            - Added dialogue for 1-3<br>
+            - Added some credit levels (Asher/Andrew)<br>
+            - Changed how saving works so players will start where they left off (dying still resets you though)<br>
+            - Added art for leeches and warps<br>
+            - Added the achievements Ghostly Step, Watch Your Step, and Fatal Attraction<br>
         </p>
 
         <button class="menu-btn" style="margin-top: 40px; font-size: 12px;" onclick="hideCustomInfo()">< Back</button>
@@ -59,9 +63,10 @@
         <h2 style="color:#fbbf24; margin-bottom:20px; font-size: 20px;">Helpful Tips</h2>
 
         <p style="color: #eee; line-height: 1.6; font-family: 'Inter', sans-serif; margin-bottom: 15px;">
-            - Take your time to figure out the best move: This game has a turn based combat system.<br>
+            - Take your time to figure out the best move: This game does not have a move timer!<br>
             - When encountering new enemies, try to figure out how they work instead of rushing through them.<br>
             - Experiment with strategies! Sometimes one thing that may work in a level won't work in another.<br>
+            - Many people forget this is a turn-based game. Remember that in your playthrough!
         </p>
 
         <button class="menu-btn" style="margin-top: 40px; font-size: 12px;" onclick="hideTipsInfo()">< Back</button>
@@ -191,6 +196,8 @@
 </div>
 
     <div id="tooltip"></div>
+
+        </div>
 
 <audio id="bgm-player"></audio>
 
