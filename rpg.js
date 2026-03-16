@@ -5068,6 +5068,24 @@ gameGrid.addEventListener('touchend', (e) => {
     const dx = touchEndX - touchStartX;
     const dy = touchEndY - touchStartY;
 
+    // --- DIALOGUE TOUCH CONTROLS ---
+const dialogueOverlay = document.getElementById('dialogue-overlay');
+
+// Listen for mobile taps on the overlay
+dialogueOverlay.addEventListener('touchend', (e) => {
+    if (isDialogueOpen) {
+        e.preventDefault(); // Prevents the browser from accidentally firing a 'click' right after
+        advanceDialogue();
+    }
+});
+
+// Listen for regular clicks (mouse or trackpad) on the overlay just in case
+dialogueOverlay.addEventListener('click', (e) => {
+    if (isDialogueOpen) {
+        advanceDialogue();
+    }
+});
+
     // Determine if it was a Tap or a Swipe
     if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) {
         // 2. IT'S A TAP: Standard Attack
@@ -5097,20 +5115,3 @@ gameGrid.addEventListener('touchend', (e) => {
     }
 }, { passive: false });
 
-// --- DIALOGUE TOUCH CONTROLS ---
-const dialogueOverlay = document.getElementById('dialogue-overlay');
-
-// Listen for mobile taps on the overlay
-dialogueOverlay.addEventListener('touchend', (e) => {
-    if (isDialogueOpen) {
-        e.preventDefault(); // Prevents the browser from accidentally firing a 'click' right after
-        advanceDialogue();
-    }
-});
-
-// Listen for regular clicks (mouse or trackpad) on the overlay just in case
-dialogueOverlay.addEventListener('click', (e) => {
-    if (isDialogueOpen) {
-        advanceDialogue();
-    }
-});
