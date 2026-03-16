@@ -5068,23 +5068,32 @@ gameGrid.addEventListener('touchend', (e) => {
     const dx = touchEndX - touchStartX;
     const dy = touchEndY - touchStartY;
 
-    // --- DIALOGUE TOUCH CONTROLS ---
-const dialogueOverlay = document.getElementById('dialogue-overlay');
+// --- MOBILE TOUCH CONTROLS ---
+let touchStartX = 0;
+let touchStartY = 0;
+const SWIPE_THRESHOLD = 30; // Minimum pixels to count as a swipe
 
-// Listen for mobile taps on the overlay
-dialogueOverlay.addEventListener('touchend', (e) => {
-    if (isDialogueOpen) {
-        e.preventDefault(); // Prevents the browser from accidentally firing a 'click' right after
-        advanceDialogue();
-    }
-});
+const gameGrid = document.getElementById('grid');
 
-// Listen for regular clicks (mouse or trackpad) on the overlay just in case
-dialogueOverlay.addEventListener('click', (e) => {
+gameGrid.addEventListener('touchstart', (e) => {
+    // Prevent scrolling when interacting with the game
+    if (currentLevelId !== '0' && !isDialogueOpen) e.preventDefault();
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, { passive: false });
+
+gameGrid.addEventListener('touchend', (e) => {
+    // 1. DIALOGUE CHECK: If dialogue is open, any tap advances it
     if (isDialogueOpen) {
-        advanceDialogue();
+        advanceDialogue(); 
+        return; // Stop here so they don't attack/move behind the text
     }
-});
+
+    const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
+    
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
 
     // Determine if it was a Tap or a Swipe
     if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) {
@@ -5115,3 +5124,20 @@ dialogueOverlay.addEventListener('click', (e) => {
     }
 }, { passive: false });
 
+// --- DIALOGUE TOUCH CONTROLS ---
+const dialogueOverlay = document.getElementById('dialogue-overlay');
+
+// Listen for mobile taps on the overlay
+dialogueOverlay.addEventListener('touchend', (e) => {
+    if (isDialogueOpen) {
+        e.preventDefault(); // Prevents the browser from accidentally firing a 'click' right after
+        advanceDialogue();
+    }
+});
+
+// Listen for regular clicks (mouse or trackpad) on the overlay just in case
+dialogueOverlay.addEventListener('click', (e) => {
+    if (isDialogueOpen) {
+        advanceDialogue();
+    }
+});});
