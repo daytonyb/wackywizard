@@ -1848,7 +1848,14 @@ function startDialogue(textData, speakerName = "Wizard") {
     advanceDialogue();
 }
 
+let lastDialogueAdvance = 0;
+
 function advanceDialogue() {
+    const now = Date.now();
+    // Prevent double-firing within 250ms (neutralizes ghost clicks)
+    if (now - lastDialogueAdvance < 250) return; 
+    lastDialogueAdvance = now;
+
     if (dialogueQueue.length > 0) {
         // Take the first line out of the queue and show it
         const line = dialogueQueue.shift();
@@ -5050,34 +5057,7 @@ const gameGrid = document.getElementById('grid');
 
 gameGrid.addEventListener('touchstart', (e) => {
     // Prevent scrolling when interacting with the game
-    if (currentLevelId !== '0' && !isDialogueOpen) e.preventDefault();
-    touchStartX = e.changedTouches[0].screenX;
-    touchStartY = e.changedTouches[0].screenY;
-}, { passive: false });
-
-gameGrid.addEventListener('touchend', (e) => {
-    // 1. DIALOGUE CHECK: If dialogue is open, any tap advances it
-    if (isDialogueOpen) {
-        advanceDialogue(); 
-        return; // Stop here so they don't attack/move behind the text
-    }
-
-    const touchEndX = e.changedTouches[0].screenX;
-    const touchEndY = e.changedTouches[0].screenY;
-    
-    const dx = touchEndX - touchStartX;
-    const dy = touchEndY - touchStartY;
-
-// --- MOBILE TOUCH CONTROLS ---
-let touchStartX = 0;
-let touchStartY = 0;
-const SWIPE_THRESHOLD = 30; // Minimum pixels to count as a swipe
-
-const gameGrid = document.getElementById('grid');
-
-gameGrid.addEventListener('touchstart', (e) => {
-    // Prevent scrolling when interacting with the game
-    if (currentLevelId !== '0' && !isDialogueOpen) e.preventDefault();
+if (currentLevelId !== '0' || isDialogueOpen) e.preventDefault();
     touchStartX = e.changedTouches[0].screenX;
     touchStartY = e.changedTouches[0].screenY;
 }, { passive: false });
@@ -5127,17 +5107,22 @@ gameGrid.addEventListener('touchend', (e) => {
 // --- DIALOGUE TOUCH CONTROLS ---
 const dialogueOverlay = document.getElementById('dialogue-overlay');
 
-// Listen for mobile taps on the overlay
+// 1. Prevent the browser from turning your tap into a scroll
+dialogueOverlay.addEventListener('touchstart', (e) => {
+    if (isDialogueOpen) e.preventDefault();
+}, { passive: false });
+
+// 2. Listen for mobile taps on the overlay
 dialogueOverlay.addEventListener('touchend', (e) => {
     if (isDialogueOpen) {
-        e.preventDefault(); // Prevents the browser from accidentally firing a 'click' right after
+        e.preventDefault(); 
         advanceDialogue();
     }
 });
 
-// Listen for regular clicks (mouse or trackpad) on the overlay just in case
+// 3. Listen for regular clicks (mouse or trackpad)
 dialogueOverlay.addEventListener('click', (e) => {
     if (isDialogueOpen) {
         advanceDialogue();
     }
-});});
+});
