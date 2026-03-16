@@ -118,9 +118,7 @@ const LEVELS = {
         ],
         enemies: [
             { pos: "E5", type: "golem"}, {pos: "A9"}, {pos: "I1"}
-        ], items: [
-            {pos: "G7", type: "potion", value: 5}
-        ]
+        ], items: []
     },
             'Bow23':{
         name: "Bow Level 3",
@@ -131,7 +129,8 @@ const LEVELS = {
         enemies: [
             { pos: "I1"}, {pos: "A9"}, {pos: "E5", type: "golem"}, {pos: "C3", type: "mage"}, {pos: "G7", type: "fast"}
         ], items: [
-            {pos: "C3", type: "sword", value: 2, name: "Rusty Sword"}
+            {pos: "C3", type: "weapon", value: 2, name: "Rusty Sword"},
+            {pos: "G7", type: "potion", value: 5}
         ]
     },
                 'Bow2B':{
@@ -141,7 +140,8 @@ const LEVELS = {
             { pos: "I9", type: "door", targetLevel: 'Bows', targetPos: "E6" },
         ],
         enemies: [
-            {pos: "E5", isBoss: true, hp: 50}
+            {pos: "F4", isBoss: true, hp: 50},
+            {pos: "D6", isBoss: true, hp: 50}
         ], items: []
     },
         'Daggers':{
