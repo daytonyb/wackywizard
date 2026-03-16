@@ -248,6 +248,7 @@ const LEVELS = {
         portals: [
             { pos: "E9", type: "door", targetLevel: 'Credits', targetPos: "E5" },
             { pos: "A1", type: "portal", targetLevel: 'Bloodbath', targetPos: "I9", label: "(())" } ,
+            { pos: "C1", type: "portal", targetLevel: 'The Backrooms', targetPos: "E5", label: "<>" } ,
         ],
         enemies: [], items: []
     },
@@ -264,6 +265,20 @@ const LEVELS = {
         ice: ["D4","F4","G4","E4","C5","E5","G5"],
         rivers: ["H3","H4","H5"]
     },
+        'The Backrooms':{
+            name: "The Backrooms",
+            walls: ["E1","E2","E3","D4","F4","A5","B5","C5","G5","H5","I5","D6","F6","E7","E8","E9"],
+            portals: [
+                {pos: "I9", type: "door", targetLevel: 'AR-Select', targetPos: "E6" },
+            ],
+            enemies: [
+                {pos: "B2", type: "leech"},{pos: "C2", type: "fast"},{pos: "D3", type: "fast"},{pos: "A4", type: "fast"},{pos: "F2", type: "welder"},{pos: "G3", type: "welder"},{pos: "H4", type: "welder"},{pos: "I3", type: "welder"},{pos: "B7", type: "guard"},{pos: "C8", type: "bat"},{pos: "G8", type: "ranged"},{pos: "H6", type: "mage"},
+            ], 
+            items: [],
+            warps: [
+                {pos: "A1", target: "E4"},{pos : "E4", target: "A1"},{pos: "I1", target: "F5"},{pos: "F5", target: "I1"},{pos: "D5", target: "A9"},{pos: "A9", target: "D5"},{pos: "E6", target: "F7"},{pos: "F7", target: "E6"},
+            ],
+        },
         'TG-Select':{
         name: "Tasin's Levels",
         walls: [],
@@ -1993,8 +2008,8 @@ function drawGrid() {
                      if(enemyHere.type === 'ranged') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-ranged'); }
                      else if(enemyHere.type === 'mage') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-mage'); }
                      else if(enemyHere.type === 'fast') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-fast'); }
-                     else if(enemyHere.type === 'bat') { eIcon.textContent = 'W'; cell.classList.add('enemy', 'enemy-bat'); }
-                     else if(enemyHere.type === 'golem') { eIcon.textContent = 'G'; cell.classList.add('enemy', 'enemy-golem'); }
+                     else if(enemyHere.type === 'bat') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-bat'); }
+                     else if(enemyHere.type === 'golem') { eIcon.textContent = ''; cell.classList.add('enemy', 'enemy-golem'); }
                      else if(enemyHere.type === 'guard') { eIcon.textContent = 'K'; cell.classList.add('enemy', 'enemy-guard'); }
                      else if(enemyHere.type === 'yeti') { eIcon.textContent = 'Y'; cell.classList.add('enemy', 'enemy-yeti'); }
                      else if(enemyHere.type === 'wraith') { eIcon.textContent = '👻'; cell.classList.add('enemy', 'enemy-wraith'); }
@@ -2196,34 +2211,48 @@ function updateStats() {
     if (xpFill) xpFill.style.width = `${(player.xp / player.maxXp) * 100}%`;
 
     // --- 5. ABILITY BAR ---
-    const abBar = document.getElementById('ability-bar');
+   const abBar = document.getElementById('ability-bar');
+    const mobileBar = document.getElementById('mobile-skill-bar');
+    
+    // Simple mobile detection
+    const isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
     if (abBar) {
         abBar.innerHTML = '';
-        
-        if (player.skills.includes('heal')) {
-            const onCd = player.cooldowns.heal > 0;
-            abBar.innerHTML += `<div style="background:${onCd ? '#555' : '#22c55e'}; padding:2px 5px;">1: Mend (${player.cooldowns.heal})</div>`;
+        if (mobileBar) {
+            mobileBar.innerHTML = '';
+            mobileBar.style.display = isMobile ? 'flex' : 'none';
         }
-        if (player.skills.includes('cleave')) {
-            const onCd = player.cooldowns.cleave > 0;
-            abBar.innerHTML += `<div style="background:${onCd ? '#555' : '#ef4444'}; padding:2px 5px;">2: Cleave (${player.cooldowns.cleave})</div>`;
-        }
-        if (player.skills.includes('dash')) {
-            const onCd = player.cooldowns.dash > 0;
-            abBar.innerHTML += `<div style="background:${onCd ? '#555' : '#3b82f6'}; padding:2px 5px;">3: Phase (${player.cooldowns.dash})</div>`;
-        }
-        if (player.skills.includes('wall')) {
-            const onCd = player.cooldowns.wall > 0;
-            abBar.innerHTML += `<div style="background:${onCd ? '#555' : '#d97706'}; padding:2px 5px;">4: Wall (${player.cooldowns.wall})</div>`;
-        }
-        if (player.skills.includes('hook')) {
-            const onCd = player.cooldowns.hook > 0;
-            abBar.innerHTML += `<div style="background:${onCd ? '#555' : '#8b5cf6'}; padding:2px 5px;">5: Hook (${player.cooldowns.hook})</div>`;
-        }
-        if (player.skills.includes('bomb')) {
-            const onCd = player.cooldowns.bomb > 0;
-            abBar.innerHTML += `<div style="background:${onCd ? '#555' : '#ec4899'}; padding:2px 5px;">6: Bomb (${player.cooldowns.bomb})</div>`;
-        }
+
+        const skillData = [
+            { id: 'heal', key: '1', label: 'Mend', color: '#22c55e' },
+            { id: 'cleave', key: '2', label: 'Cleave', color: '#ef4444' },
+            { id: 'dash', key: '3', label: 'Phase', color: '#3b82f6' },
+            { id: 'wall', key: '4', label: 'Wall', color: '#d97706' },
+            { id: 'hook', key: '5', label: 'Hook', color: '#8b5cf6' },
+            { id: 'bomb', key: '6', label: 'Bomb', color: '#ec4899' }
+        ];
+
+        skillData.forEach(skill => {
+            if (player.skills.includes(skill.id)) {
+                const onCd = player.cooldowns[skill.id] > 0;
+                const statusText = `${skill.key}: ${skill.label} (${player.cooldowns[skill.id]})`;
+                
+                // 1. Desktop Text Bar
+                abBar.innerHTML += `<div style="background:${onCd ? '#555' : skill.color}; padding:2px 5px; border-radius:3px;">${statusText}</div>`;
+
+                // 2. Mobile Clickable Buttons
+                if (isMobile && mobileBar) {
+                    const btn = document.createElement('button');
+                    btn.className = 'mobile-action-btn';
+                    btn.style.backgroundColor = onCd ? '#444' : skill.color;
+                    btn.innerHTML = `<strong>${skill.label[0]}</strong><br><small>${player.cooldowns[skill.id]}</small>`;
+                    btn.onclick = () => castSkill(skill.id);
+                    if (onCd) btn.disabled = true;
+                    mobileBar.appendChild(btn);
+                }
+            }
+        });
     }
 }
 
@@ -5011,3 +5040,59 @@ function scaleGame() {
 window.addEventListener('resize', scaleGame);
 document.addEventListener('DOMContentLoaded', scaleGame);
 scaleGame();
+
+// --- MOBILE TOUCH CONTROLS ---
+let touchStartX = 0;
+let touchStartY = 0;
+const SWIPE_THRESHOLD = 30; // Minimum pixels to count as a swipe
+
+const gameGrid = document.getElementById('grid');
+
+gameGrid.addEventListener('touchstart', (e) => {
+    // Prevent scrolling when interacting with the game
+    if (currentLevelId !== '0' && !isDialogueOpen) e.preventDefault();
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+}, { passive: false });
+
+gameGrid.addEventListener('touchend', (e) => {
+    if (isDialogueOpen) {
+        advanceDialogue();
+        return;
+    }
+
+    const touchEndX = e.changedTouches[0].screenX;
+    const touchEndY = e.changedTouches[0].screenY;
+    
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+
+    // Determine if it was a Tap or a Swipe
+    if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) {
+        // --- IT'S A TAP (Attack) ---
+        if (playerActionsLeft > 0 && !inputLocked && player.hp > 0) {
+            playerAttack();
+            playerActionsLeft--;
+            consumeAction();
+            inputLocked = true;
+            setTimeout(() => { inputLocked = false; }, 150);
+        }
+    } else {
+        // --- IT'S A SWIPE (Movement) ---
+        let moveX = 0;
+        let moveY = 0;
+
+        // Determine direction based on the larger axis
+        if (Math.abs(dx) > Math.abs(dy)) {
+            moveX = dx > 0 ? 1 : -1; // Right or Left
+        } else {
+            moveY = dy > 0 ? 1 : -1; // Down or Up
+        }
+
+        if (playerActionsLeft > 0 && !inputLocked && player.hp > 0) {
+            handleTurn(moveX, moveY);
+            inputLocked = true;
+            setTimeout(() => { inputLocked = false; }, 150);
+        }
+    }
+}, { passive: false });
