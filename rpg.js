@@ -5056,9 +5056,10 @@ gameGrid.addEventListener('touchstart', (e) => {
 }, { passive: false });
 
 gameGrid.addEventListener('touchend', (e) => {
+    // 1. DIALOGUE CHECK: If dialogue is open, any tap advances it
     if (isDialogueOpen) {
-        advanceDialogue();
-        return;
+        advanceDialogue(); 
+        return; // Stop here so they don't attack/move behind the text
     }
 
     const touchEndX = e.changedTouches[0].screenX;
@@ -5069,7 +5070,7 @@ gameGrid.addEventListener('touchend', (e) => {
 
     // Determine if it was a Tap or a Swipe
     if (Math.abs(dx) < SWIPE_THRESHOLD && Math.abs(dy) < SWIPE_THRESHOLD) {
-        // --- IT'S A TAP (Attack) ---
+        // 2. IT'S A TAP: Standard Attack
         if (playerActionsLeft > 0 && !inputLocked && player.hp > 0) {
             playerAttack();
             playerActionsLeft--;
@@ -5078,15 +5079,14 @@ gameGrid.addEventListener('touchend', (e) => {
             setTimeout(() => { inputLocked = false; }, 150);
         }
     } else {
-        // --- IT'S A SWIPE (Movement) ---
+        // 3. IT'S A SWIPE: Standard Movement
         let moveX = 0;
         let moveY = 0;
 
-        // Determine direction based on the larger axis
         if (Math.abs(dx) > Math.abs(dy)) {
-            moveX = dx > 0 ? 1 : -1; // Right or Left
+            moveX = dx > 0 ? 1 : -1; 
         } else {
-            moveY = dy > 0 ? 1 : -1; // Down or Up
+            moveY = dy > 0 ? 1 : -1; 
         }
 
         if (playerActionsLeft > 0 && !inputLocked && player.hp > 0) {
