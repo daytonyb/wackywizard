@@ -87,20 +87,19 @@ body {
 }
 
 /* --- ENTITIES & OVERRIDES --- */
-.wall {
-    background-image: url('images/wall.png');
-    background-size: cover; 
-    background-position: center;
-    background-repeat: no-repeat;
-    image-rendering: pixelated; 
-}
 
-.door {
-    background-image: url('images/door.png');
-    background-size: cover; 
+/* Ice Tiles */
+.tile-ice {
+    background-image: url('images/ice.png');
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    image-rendering: pixelated; 
+}
+.tile-ice::after {
+    content: ""; /* Snow/Ice symbol */
+    color: #0ea5e9;
+    opacity: 0.5;
+    font-size: 14px;
 }
 
 .portal { 
@@ -368,9 +367,6 @@ body {
 .boss-bar-fill { height: 100%; background-color: #ef4444; width: 100%; transition: width 0.3s ease-out; }
 
 /* Level 3 Specifics */
-.boulder { background-color: #5d4037 !important; color: #a1887f; border-radius: 8px; z-index: 1; border: 2px solid #3e2723 !important; }
-.boulder::after { content: "O"; font-weight: 900; font-size: 20px; }
-.boulder-cracked { opacity: 0.7; background-color: #4e342e !important; border-style: dashed !important; }
 .quake-anim { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; background-color: #d7ccc8; }
 
 /* --- TUTORIAL OVERLAY --- */
@@ -456,19 +452,6 @@ body {
 .biome-ice .cell {
     background-color: #0f172a; /* Dark Navy */
     border-color: #1e293b;
-}
-
-/* Ice Tiles */
-.tile-ice {
-    background-color: #bae6fd !important; /* Light Blue */
-    box-shadow: inset 0 0 10px #fff;
-    transition: background-color 0.3s;
-}
-.tile-ice::after {
-    content: "❄"; /* Snow/Ice symbol */
-    color: #0ea5e9;
-    opacity: 0.5;
-    font-size: 14px;
 }
 
 /* Enemy: Yeti */
@@ -1360,6 +1343,26 @@ body {
     z-index: 100;
     transition: all 0.1s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+.wall {
+    background-image: url('images/wall.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated; 
+}
+
+.door {
+    background-image: url('images/door.png');
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: pixelated; 
+}
+
+.boulder { background-color: #5d4037 !important; color: #a1887f; border-radius: 8px; z-index: 1; border: 2px solid #3e2723 !important; }
+.boulder::after { content: "O"; font-weight: 900; font-size: 20px; }
+.boulder-cracked { opacity: 0.7; background-color: #4e342e !important; border-style: dashed !important; }
 
 .player span {
     display: none;
