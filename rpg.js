@@ -187,8 +187,8 @@ const LEVELS = {
         text: [
             "Code by Dayton B.",
             "Music by Kameron M.",
-            "Art by Dayton B. and Asher V.",
-            "Other Notable People include Andrew R., Tasin G., Ryan S., and Abhi T.",
+            "Art by Dayton B., Asher V., and Andrew R.",
+            "Other Notable People include Tasin G., Ryan S., and Abhi T.",
             "All levels in this world were designed by the people in these credits!",
             "Special thanks to all these people!"
         ],
@@ -249,6 +249,10 @@ const LEVELS = {
             { pos: "E9", type: "door", targetLevel: 'Credits', targetPos: "E5" },
             { pos: "A1", type: "portal", targetLevel: 'Bloodbath', targetPos: "I9", label: "(())" } ,
             { pos: "C1", type: "portal", targetLevel: 'The Backrooms', targetPos: "E5", label: "<>" } ,
+            { pos: "E1", type: "portal", targetLevel: 'AnimalMagnet', targetPos: "A9", label: "#$" } ,
+            { pos: "G1", type: "portal", targetLevel: 'Chernobyl', targetPos: "E9", label: "<::" } ,
+            { pos: "I1", type: "portal", targetLevel: 'Frosty', targetPos: "A1", label: "**" } ,
+            { pos: "A3", type: "portal", targetLevel: 'FHP', targetPos: "A9", label: "&" } ,
         ],
         enemies: [], items: []
     },
@@ -277,6 +281,59 @@ const LEVELS = {
             items: [],
             warps: [
                 {pos: "A1", target: "E4"},{pos : "E4", target: "A1"},{pos: "I1", target: "F5"},{pos: "F5", target: "I1"},{pos: "D5", target: "A9"},{pos: "A9", target: "D5"},{pos: "E6", target: "F7"},{pos: "F7", target: "E6"},
+            ],
+        },
+        'AnimalMagnet':{
+            name: "Animal Magnetism",
+            walls: ["A1","C2","F2","E4","B5","B8","G8"],
+            enemies: [
+                {pos: "B1"},{pos: "C1", type: "sentinel"},{pos: "D1", type: "guard"},{pos: "F1", type: "ranged"},{pos: "G1", type: "mage"},{pos: "H1", type: "fast"},{pos: "I1", type: "bat"},
+                {pos: "B2"},{pos: "D2", type: "bat"},{pos: "G2", type: "leech"},{pos: "H2", type: "bat"},{pos: "I2"},{pos: "B3", type: "bat"},{pos: "I3", type: "mage"},
+                {pos: "B4", type: "leech"},{pos: "C4", type: "sentinel"},{pos: "D4"},{pos: "H4", type: "leech"},{pos: "I4"},{pos: "G5", type: "ranged"},{pos: "E6", type: "guard"},{pos: "C5"},{pos: "H5"},{pos: "H7"},
+            ], items: [],
+            hazards: ["E1","E3","A4","F4","F6","G6","A7","F8"],
+            thickets: ["G3","C6","D8"],
+            spikes: ["C7","A2","E2"],
+            portals: [
+                {pos: "I9", type: "door", targetLevel: 'AR-Select', targetPos: "E6" },
+            ],
+        },
+        'Chernobyl':{
+            name: "Chernobyl",
+            walls: ["B1","B2","B3","B4","B5","H1","H2","H3","H4","H5","C5","D5","E5","F5","G5"],
+            hazards: ["C1","C2","C3","C4","D1","D2","D3","D4","E1","E2","E3","E4","F1","F2","F3","F4","G1","G2","G3","G4"],
+            crystals: ["A2","I2","E6","H6","B8"],
+            enemies: [
+                {pos: "A1", type: "guard"},{pos: "I1", type: "guard"},{pos: "E2", type: "wraith"},{pos: "A3", type: "welder"},{pos: "I3", type: "ranged"},{pos: "A4"},{pos: "A5", type: "fast"},{pos: "I5", type: "mage"},{pos: "F6", type: "fast"},{pos: "A7", type: "mage"},{pos: "E8", type: "welder"},
+            ],
+            portals: [
+                {pos: "E1", type: "door", targetLevel: 'AR-Select', targetPos: "E6" },
+            ],
+        },
+        'Frosty':{
+            name: "Frosty",
+            walls: [],
+            ice: ["B1","C1","D1","E1","F1","G1","H1","I2","I3","I4","H4","H3","G3","A2","B2","C2","E2","D3","C4","E4","C5","F5","G5","H6","E6","B6","A6","A3","A4","A5","H8","G8","F8","E8","D8","C8","B8","F7","E7","D7","C7","B7","A7"],
+            hazards: ["G7","D2"],
+            enemies: [
+                {pos: "I1", type: "fast"},{pos: "F3", type: "fast"},{pos: "D5", type: "fast"},{pos: "G6", type: "fast"},{pos: "A8", type: "fast"},{pos: "A9", type: "fast"},{pos: "F2", type: "golem"},{pos: "E9", type: "golem"},{pos: "H7", type: "mage"},
+            ],
+            portals: [
+                {pos: "I9", type: "door", targetLevel: 'AR-Select', targetPos: "E6" },
+            ]
+        },
+        'FHP':{
+            name: "Fallen Heroes & Parasites",
+            walls:[],
+            hazards: ["A3","A4","D3","E3","F3","D4","E4","F4","I3","I4"],
+            enemies: [
+                {pos: "A5", type: "welder"},{pos: "B5", type: "welder"},{pos: "C5", type: "welder"},{pos: "D5", type: "welder"},{pos: "E5", type: "welder"},{pos: "F5", type: "welder"},{pos: "G5", type: "welder"},{pos: "H5", type: "welder"},{pos: "I5", type: "welder"},
+                {pos: "E1", type: "welder"},{pos: "C3", type: "welder"},{pos: "G3", type: "welder"},{pos: "B4", type: "welder"},{pos: "H4", type: "welder"},
+                {pos: "A2", type: "leech"},{pos: "C2", type: "leech"},{pos: "E2", type: "leech"},{pos: "G2", type: "leech"},{pos: "I2", type: "leech"},{pos: "B3", type: "leech"},{pos: "H3", type: "leech"},{pos: "C4", type: "leech"},{pos: "G4", type: "leech"},{pos: "E6", type: "leech"},
+                {pos: "B2", type: "guard"},{pos: "D2", type: "guard"},{pos: "F2", type: "guard"},{pos: "H2", type: "guard"},
+            ],
+            portals: [
+                {pos: "I9", type: "door", targetLevel: 'AR-Select', targetPos: "E6" },
             ],
         },
         'TG-Select':{
@@ -907,14 +964,14 @@ const LEVELS = {
     },
 
         'W3-1': { 
-        name: "310 Muddy Water", 
-        walls: ["I2","H2","B2","D2","F2","G2","I3"], 
+        name: "310 The Cave", 
+        walls: ["I2","H2","B2","D2","F2","G2"], 
         portals: [
             { pos: "A1", targetLevel: 'W3-1-1', targetPos: "A1", type: "portal", label: "1" },
             { pos: "C1", targetLevel: 'W3-1-2', targetPos: "E1", type: "portal", label: "2" },
             { pos: "E1", targetLevel: 'W3-1-3', targetPos: "A1", type: "portal", label: "3" },
             { pos: "E9", targetLevel: 'World-3-Select', targetPos: "E6", type: "door" },
-            { pos: "I1", type: "portal", label: "B" },
+            { pos: "I1", targetLevel: 'W3-1-4', targetPos: "E9", type: "portal", label: "B" },
         ],
     },
 
@@ -984,13 +1041,60 @@ const LEVELS = {
     },
 
 'W3-1-4': { 
-        name: "31B The Mud Monster", 
-        walls: ["A1","A9","I1","I9"], 
-        hazards: [], 
+        name: "31B - The Living Forge", 
+        walls: ["E8","H5","B5","E2","C3", "G3", "C7", "G7"], 
+        pits: ["A2","A8","I2","I8","A1","A9","I1","I9","B1","H1","B9","H9"], // Thematic magma vents in the corners
+        crystals: [], // Starting bombs for the player to use
+        hazards: [], // Vulcan will fill this with magma as the fight goes on
         portals: [
-            { pos: "E9", targetLevel: 'W2-1', targetPos: "E6", type: "door" }, // Exit
+            { pos: "E9", targetLevel: 'World-3-Select', targetPos: "E6", type: "door" }, 
         ],
-        enemies: [{ pos: "E5", isBoss: true, type: "mud_monster", hp: 100 }] 
+        enemies: [
+            { pos: "E5", isBoss: true, type: "vulcan", hp: 100 },{ pos: "E5", isBoss: true, type: "vulcan", hp: 100 },{ pos: "E5", isBoss: true, type: "zephyr", hp: 100 },
+        ] 
+    },
+
+            'W3-2': { 
+        name: "320 ", 
+        walls: ["I2","H2","B2","D2","F2","G2"], 
+        portals: [
+            { pos: "A1", targetLevel: 'W3-2-1', targetPos: "A1", type: "portal", label: "1" },
+            { pos: "C1", targetLevel: 'W3-2-2', targetPos: "B8", type: "portal", label: "2" },
+            { pos: "E1", targetLevel: 'W3-2-3', targetPos: "A1", type: "portal", label: "3" },
+            { pos: "E9", targetLevel: 'World-3-Select', targetPos: "E6", type: "door" },
+            { pos: "I1", targetLevel: 'W3-2-4', targetPos: "E9", type: "portal", label: "B" },
+        ],
+    },
+        'W3-2-1': { 
+        name: "321 ", 
+        walls: ["G3","C3","C7","C1","A3","G1","I3","C9","A7","B7","C8","G2","H3","G6","F7","C4","D3","E2","B5","I7","H7","G8","G9","G7"], 
+        ice: ["B1","A2","B2","A4","C2","D1","B4","D2","H1","H4","I4","I2","H5","E8","F9","I6","I5","E9","D9","D8","A8","B9","B3","A1","E1","A5","A6","F1","F2","B6","I1","H2","B8","A9","H6","F8",],
+        boulders: ["D4","F6","C6","D7","F3","G4","C5","E3","G5","E7"],
+        crumble: ["H9","H8","I8","E6","F5","E4","D5"],
+        crystals: ["A6","F1"],
+        warps: [
+            {pos:"E5",target:"H8"}
+        ],
+        enemies: [
+            {pos:"E1",type:"mage"},{pos:"A5",type:"mage"},{pos:"D6",type:"yeti"},{pos:"F4",type:"yeti"},{pos:"A9",type:"sentinel"},{pos:"I1",type:"sentinel"},{pos:"B8",type:"melee"},{pos:"H2",type:"melee"},{pos:"H6",type:"wraith"},{pos:"F8",type:"wraith"},{pos:"G7",type:"wraith"}
+        ],
+        portals: [
+            { pos: "I9", targetLevel: 'W3-2', targetPos: "E6", type: "door" }
+        ],
+    },
+    'W3-2-2': {
+        name: "322 ",
+        walls: ["I8","G6","E6","F6","D5","D4","D3","D2","D1","I6","A5","C5","E8","B5"],
+        enemies: [
+            {pos:"A3",type:"mage"},{pos:"B3",type:"mage"},{pos:"C3",type:"mage"},{pos:"C2",type:"mage"},{pos:"C1",type:"mage"},{pos:"B1",type:"mage"},{pos:"A1",type:"mage"},{pos:"A2",type:"mage"},{pos:"A4",type:"mage"},{pos:"B4",type:"mage"},{pos:"C4",type:"mage"},{pos:"B2",type:"mage"},
+        ],
+        rivers: ["D6"],
+        ice: ["F8","E9","D9","C9","B9","A9","A8","A7","B7","C7","D7","E7","F7","G7","C6","B6","A6","D8","F9","H9","C8","H8","G8","H7","B8"],
+        boulders: ["E5","E4","E3","E2","F1","G1","H1","I2","H2","G2","F2","F3","H3","I3","I4","H4","G4","F4","F5","G5","H5","I5","H6","G3","I1"],
+        warps: [{pos:"I7",target:"E1"},{pos:"E1",target:"I7"},{pos:"I9",target:"B2"},{pos:"B2",target:"I9"},{pos:"G9",target:"B8"}],
+        portals: [
+                        { pos: "I1", targetLevel: 'W3-2', targetPos: "E6", type: "door" }
+        ],
     },
 }
 
@@ -1327,6 +1431,16 @@ function applyGlobalUnlocks() {
         if (wIndex > -1) {
             hub.walls.splice(wIndex, 1);
             log("A wall crumbles open...");
+        }
+    }
+
+        if (gameProgress.w3l1Complete) {
+        const hub = LEVELS['World-3-Select'];
+        // Remove Wall at C2 to open path to Level 2
+        const wIndex = hub.walls.indexOf("C2");
+        if (wIndex > -1) {
+            hub.walls.splice(wIndex, 1);
+            log("Path to Level 2 is open!");
         }
     }
 
@@ -1990,6 +2104,7 @@ function drawGrid() {
         cell.classList.add('boss', 'boss-dragonfly'); 
     }
                      else if(enemyHere.type === 'entropy') { eIcon.textContent = 'Ø'; cell.classList.add('boss', 'boss-entropy'); }
+                     else if(enemyHere.type === 'vulcan') { eIcon.textContent = '🌋'; cell.classList.add('boss', 'boss-vulcan'); }
                      else if(enemyHere.type === 'hydra') { eIcon.textContent = '🐍'; cell.classList.add('boss'); }
                      else if(enemyHere.type === 'gear') { eIcon.textContent = '⚙️'; cell.classList.add('boss', 'boss-gear'); }
                      else if(enemyHere.type === 'mud_monster') { eIcon.textContent = ''; cell.classList.add('boss', 'boss-mud'); }
@@ -2474,6 +2589,8 @@ if (e.key === 'm' || e.key === 'M') {
 
         gameProgress.w2l5Complete = true;
 
+                gameProgress.w3l1Complete = true;
+
         gameProgress.story1Complete = true;
 
         // If currently in the hub, apply the changes instantly
@@ -2921,6 +3038,8 @@ function handleTurn(dx, dy) {
         if (currentLevelId === 'W2-4-4') gameProgress.w2l4Complete = true;
         if (currentLevelId === 'W2-5-5') gameProgress.w2l5Complete = true;
 
+        if (currentLevelId === 'W3-1-4') gameProgress.w3l1Complete = true; 
+
         if (currentLevelId === '5-Boss') gameProgress.w1Complete = true; 
 
         if (currentLevelId === '14') gameProgress.story1Complete = true;
@@ -3070,6 +3189,71 @@ function handleTurn(dx, dy) {
 }
 
 function processOneEnemyTurn(enemy) {
+
+    // --- VULCAN BOSS LOGIC ---
+    if (enemy.isBoss && enemy.type === "vulcan") {
+
+        const roll = Math.random();
+
+        // 2. 10% Chance: Ignite all bombs
+        if (roll < 0.10) {
+            log("VULCAN strikes his anvil! All crystals ignite!");
+            const gridEl = document.getElementById('grid');
+            if (gridEl) { // Safety check to prevent null errors
+                gridEl.classList.add('screen-shake');
+                setTimeout(() => gridEl.classList.remove('screen-shake'), 400);
+            }
+
+            let ignitedAny = false;
+            crystals.forEach(c => {
+                if (!c.ignited) {
+                    c.ignited = true;
+                    triggerAttackAnim(c.x, c.y, 'anim-slash'); // Spark effect
+                    ignitedAny = true;
+                }
+            });
+            if (!ignitedAny) log("...but there are no crystals to ignite!");
+            return true; // Ends his turn
+        }
+
+        // 3. 20% Chance: Spawn bomb next to the player
+        if (roll < 0.30) {
+            // Look for empty orthogonal tiles next to the player
+            const adjacent = [
+                {x: player.x+1, y: player.y}, {x: player.x-1, y: player.y}, 
+                {x: player.x, y: player.y+1}, {x: player.x, y: player.y-1}
+            ].filter(p => 
+                p.x >= 0 && p.x < 9 && p.y >= 0 && p.y < 9 && 
+                !isWall(p.x, p.y) && !isBoulder(p.x, p.y) && 
+                !enemies.some(e => e.alive && e.x === p.x && e.y === p.y) &&
+                !crystals.some(c => c.x === p.x && c.y === p.y)
+            );
+
+            // If there's an open spot, drop a crystal!
+            if (adjacent.length > 0) {
+                const spot = adjacent[Math.floor(Math.random() * adjacent.length)];
+                crystals.push({ x: spot.x, y: spot.y, ignited: false, id: Date.now() });
+                triggerAttackAnim(spot.x, spot.y, 'anim-web');
+                log("VULCAN tosses a volatile crystal right next to you!");
+                return true; // Ends his turn
+            }
+        }
+
+        // 4. 70% Chance: Move normally (and Melee if close enough)
+        // Renamed to vDx and vDy to prevent SyntaxErrors with the rest of the file
+        const vDx = Math.abs(player.x - enemy.x);
+        const vDy = Math.abs(player.y - enemy.y);
+        
+        if (vDx <= 1 && vDy <= 1) {
+            triggerAttackAnim(player.x, player.y, 'anim-scratch');
+            player.hp -= 3;
+            triggerDamage(player.x, player.y, 3, true);
+            log("VULCAN smashes you with his hammer! -3 HP");
+            return true; // Ends his turn
+        }
+
+        // Falls through to standard movement if not meleeing
+    }
 
 // --- ICE QUEEN (SUMMONER SKIN) BOSS LOGIC ---
     if (enemy.isBoss && enemy.type === "summoner" && enemy.skin === "ice_queen") {
